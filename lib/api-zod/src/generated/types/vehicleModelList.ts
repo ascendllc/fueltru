@@ -5,7 +5,6 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+import type { VehicleModel } from './vehicleModel';
 
-export interface HealthStatus {
-  status: string;
-}
+export type VehicleModelList = VehicleModel[];

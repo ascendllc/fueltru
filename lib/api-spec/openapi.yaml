@@ -10,6 +10,10 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: fuel
+    description: FuelFool gas price and vehicle fuel economy
+  - name: distance
+    description: Trip distance calculations
 paths:
   /healthz:
     get:
@@ -24,6 +28,178 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /gas-price:
+    get:
+      operationId: getGasPrice
+      tags: [fuel]
+      summary: Get local gas price by ZIP code
+      parameters:
+        - name: zip
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Gas price data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GasPrice"
+        "400":
+          description: Invalid ZIP code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "404":
+          description: No gas price data found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /vehicle/years:
+    get:
+      operationId: getVehicleYears
+      tags: [fuel]
+      summary: Get available vehicle model years
+      responses:
+        "200":
+          description: List of years
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VehicleYearList"
+
+  /vehicle/makes:
+    get:
+      operationId: getVehicleMakes
+      tags: [fuel]
+      summary: Get vehicle makes for a given year
+      parameters:
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of makes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VehicleMakeList"
+
+  /vehicle/models:
+    get:
+      operationId: getVehicleModels
+      tags: [fuel]
+      summary: Get vehicle models for a given year and make
+      parameters:
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: make
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of models
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VehicleModelList"
+
+  /vehicle/trims:
+    get:
+      operationId: getVehicleTrims
+      tags: [fuel]
+      summary: Get vehicle trim configurations for year/make/model
+      parameters:
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: make
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: model
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of trim configurations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VehicleTrimList"
+
+  /vehicle/mpg:
+    get:
+      operationId: getVehicleMpg
+      tags: [fuel]
+      summary: Get MPG data for a specific vehicle ID
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Vehicle MPG data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VehicleMpg"
+        "404":
+          description: Vehicle not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /distance:
+    get:
+      operationId: getTripDistance
+      tags: [distance]
+      summary: Get driving distance between two locations
+      parameters:
+        - name: origin
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: destination
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Trip distance and duration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TripDistance"
+        "400":
+          description: Route could not be calculated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +210,116 @@ components:
       required:
         - status
 
+    GasPrice:
+      type: object
+      properties:
+        price:
+          type: number
+        state:
+          type: string
+        source:
+          type: string
+      required:
+        - price
+        - state
+        - source
+
+    VehicleYear:
+      type: object
+      properties:
+        value:
+          type: string
+        text:
+          type: string
+      required:
+        - value
+        - text
+
+    VehicleYearList:
+      type: array
+      items:
+        $ref: "#/components/schemas/VehicleYear"
+
+    VehicleMake:
+      type: object
+      properties:
+        value:
+          type: string
+        text:
+          type: string
+      required:
+        - value
+        - text
+
+    VehicleMakeList:
+      type: array
+      items:
+        $ref: "#/components/schemas/VehicleMake"
+
+    VehicleModel:
+      type: object
+      properties:
+        value:
+          type: string
+        text:
+          type: string
+      required:
+        - value
+        - text
+
+    VehicleModelList:
+      type: array
+      items:
+        $ref: "#/components/schemas/VehicleModel"
+
+    VehicleTrim:
+      type: object
+      properties:
+        id:
+          type: string
+        text:
+          type: string
+      required:
+        - id
+        - text
+
+    VehicleTrimList:
+      type: array
+      items:
+        $ref: "#/components/schemas/VehicleTrim"
+
+    VehicleMpg:
+      type: object
+      properties:
+        combined:
+          type: number
+        city:
+          type: number
+        highway:
+          type: number
+        fuelType:
+          type: string
+      required:
+        - combined
+        - city
+        - highway
+        - fuelType
+
+    TripDistance:
+      type: object
+      properties:
+        miles:
+          type: number
+        duration:
+          type: string
+      required:
+        - miles
+        - duration
+
+    ApiError:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error

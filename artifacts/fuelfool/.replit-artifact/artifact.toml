@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "FuelFool"
+version = "1.0.0"
+id = "artifacts/fuelfool"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25492
+
+[services.development]
+run = "pnpm --filter @workspace/fuelfool run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/fuelfool", "run", "build" ]
+publicDir = "artifacts/fuelfool/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25492"
+BASE_PATH = "/"
