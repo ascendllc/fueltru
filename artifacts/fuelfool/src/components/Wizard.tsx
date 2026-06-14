@@ -3,6 +3,7 @@ import { Step1FuelUp } from "./Step1FuelUp";
 import { Step2YourRide } from "./Step2YourRide";
 import { Step3YourTrip } from "./Step3YourTrip";
 import { ResultsPanel } from "./ResultsPanel";
+import { FuelGaugeLogo } from "./FuelGaugeLogo";
 import { motion } from "framer-motion";
 
 export function Wizard() {
@@ -31,13 +32,16 @@ export function Wizard() {
   return (
     <div className="w-full max-w-4xl mx-auto px-4 py-12">
       <header className="text-center mb-12">
-        <motion.h1 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-5xl md:text-6xl font-display font-bold text-primary mb-4"
+          className="flex items-center justify-center gap-3 mb-4"
         >
-          FuelFool
-        </motion.h1>
+          <FuelGaugeLogo size={80} />
+          <h1 className="text-5xl md:text-6xl font-display font-bold text-primary">
+            FuelFool
+          </h1>
+        </motion.div>
         <p className="text-xl md:text-2xl text-foreground font-display mb-4">
           Don't be Fooled By How Much Fuel
         </p>
