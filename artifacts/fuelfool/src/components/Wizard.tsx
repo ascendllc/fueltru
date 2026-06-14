@@ -106,6 +106,8 @@ export function Wizard() {
         <a href="/how-it-works" className="hover:text-muted-foreground underline underline-offset-2 transition-colors">How It Works</a>
         {" · "}
         <a href="/faq" className="hover:text-muted-foreground underline underline-offset-2 transition-colors">FAQ</a>
+        {" · "}
+        <a href="/contact" className="hover:text-muted-foreground underline underline-offset-2 transition-colors">Contact</a>
       </footer>
     </div>
   );

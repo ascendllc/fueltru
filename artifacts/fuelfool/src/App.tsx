@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import FAQ from "@/pages/FAQ";
 import HowItWorks from "@/pages/HowItWorks";
+import Contact from "@/pages/Contact";
 import { Wizard } from "@/components/Wizard";
 import mapBg from "@assets/IMG_0122_1781468294605.jpeg";
 
@@ -37,6 +38,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/faq" component={FAQ} />
       <Route path="/how-it-works" component={HowItWorks} />
+      <Route path="/contact" component={Contact} />
       <Route component={NotFound} />
     </Switch>
   );

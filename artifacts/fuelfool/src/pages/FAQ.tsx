@@ -134,6 +134,8 @@ export default function FAQ() {
           {" · "}
           <Link href="/how-it-works" className="hover:text-muted-foreground underline underline-offset-2 transition-colors">How It Works</Link>
           {" · "}
+          <Link href="/contact" className="hover:text-muted-foreground underline underline-offset-2 transition-colors">Contact</Link>
+          {" · "}
           <Link href="/" className="hover:text-muted-foreground underline underline-offset-2 transition-colors">Calculator</Link>
         </footer>
       </div>

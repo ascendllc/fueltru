@@ -191,6 +191,8 @@ export default function HowItWorks() {
           {" · "}
           <Link href="/faq" className="hover:text-muted-foreground underline underline-offset-2 transition-colors">FAQ</Link>
           {" · "}
+          <Link href="/contact" className="hover:text-muted-foreground underline underline-offset-2 transition-colors">Contact</Link>
+          {" · "}
           <Link href="/" className="hover:text-muted-foreground underline underline-offset-2 transition-colors">Calculator</Link>
         </footer>
       </div>
