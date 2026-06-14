@@ -4,6 +4,7 @@ import { CheckCircle2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useGetTripDistance, getGetTripDistanceQueryKey } from "@workspace/api-client-react";
 
 interface Step3Props {
@@ -48,6 +49,7 @@ export function Step3YourTrip({ isActive, isComplete, onComplete }: Step3Props) 
   const [destination, setDestination] = useState("");
   const [submittedParams, setSubmittedParams] = useState<{ origin: string; destination: string } | null>(null);
   const [mapsLoaded, setMapsLoaded] = useState(false);
+  const [isRoundTrip, setIsRoundTrip] = useState(true);
 
   const originRef = useRef<HTMLInputElement>(null);
   const destRef = useRef<HTMLInputElement>(null);
@@ -90,6 +92,8 @@ export function Step3YourTrip({ isActive, isComplete, onComplete }: Step3Props) 
     { query: { enabled: !!submittedParams, queryKey: getGetTripDistanceQueryKey(submittedParams!) } }
   );
 
+  const effectiveMiles = tripData ? (isRoundTrip ? tripData.miles * 2 : tripData.miles) : 0;
+
   const handleSubmit = () => {
     if (origin && destination) {
       setSubmittedParams({ origin, destination });
@@ -98,11 +102,23 @@ export function Step3YourTrip({ isActive, isComplete, onComplete }: Step3Props) 
 
   useEffect(() => {
     if (tripData && isActive && !isComplete) {
-      onComplete(tripData.miles, tripData.duration);
+      onComplete(effectiveMiles, tripData.duration);
     }
-  }, [tripData, isActive, isComplete]);
+  }, [tripData, isActive, isComplete, isRoundTrip]);
 
   if (!isActive && !isComplete) return null;
+
+  const RoundTripToggle = (
+    <label className="flex items-center gap-2 cursor-pointer select-none w-fit">
+      <Checkbox
+        id="round-trip"
+        checked={isRoundTrip}
+        onCheckedChange={(checked) => setIsRoundTrip(checked === true)}
+        className="border-muted-foreground data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+      />
+      <span className="text-sm font-medium text-foreground">Round Trip</span>
+    </label>
+  );
 
   return (
     <motion.div
@@ -144,6 +160,7 @@ export function Step3YourTrip({ isActive, isComplete, onComplete }: Step3Props) 
               data-testid="input-destination"
             />
           </div>
+          {RoundTripToggle}
           {error && (
             <p className="text-sm text-destructive" data-testid="error-trip">
               We couldn't find a driving route between those two locations. Check your addresses and try again.
@@ -159,14 +176,19 @@ export function Step3YourTrip({ isActive, isComplete, onComplete }: Step3Props) 
           </Button>
         </div>
       ) : (
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-3">
           <div className="text-sm text-muted-foreground truncate">{origin} → {destination}</div>
-          <div className="text-3xl font-bold text-foreground" data-testid="display-distance">
-            {tripData?.miles} <span className="text-lg text-muted-foreground font-normal">miles</span>
+          <div className="flex items-end gap-4">
+            <div>
+              <div className="text-3xl font-bold text-foreground" data-testid="display-distance">
+                {effectiveMiles} <span className="text-lg text-muted-foreground font-normal">miles</span>
+              </div>
+              <div className="text-xs text-muted-foreground mt-0.5">
+                {isRoundTrip ? `${tripData?.miles} mi each way` : "one way"} · Est. {tripData?.duration}
+              </div>
+            </div>
           </div>
-          <div className="text-xs text-muted-foreground">
-            Est. drive time: {tripData?.duration}
-          </div>
+          {RoundTripToggle}
         </div>
       )}
     </motion.div>
