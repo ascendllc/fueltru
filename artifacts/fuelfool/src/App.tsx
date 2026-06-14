@@ -4,13 +4,27 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import { Wizard } from "@/components/Wizard";
+import mapBg from "@assets/IMG_0122_1781468294605.jpeg";
 
 const queryClient = new QueryClient();
 
 function Home() {
   return (
-    <div className="min-h-[100dvh] w-full bg-background text-foreground overflow-x-hidden selection:bg-primary/30">
-      <Wizard />
+    <div className="relative min-h-[100dvh] w-full bg-background text-foreground overflow-x-hidden selection:bg-primary/30">
+      <div
+        className="fixed inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `url(${mapBg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          opacity: 0.045,
+          mixBlendMode: "luminosity",
+        }}
+        aria-hidden="true"
+      />
+      <div className="relative z-10">
+        <Wizard />
+      </div>
     </div>
   );
 }
