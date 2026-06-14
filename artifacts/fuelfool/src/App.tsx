@@ -17,7 +17,7 @@ function Home() {
           backgroundImage: `url(${mapBg})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          opacity: 0.045,
+          opacity: 0.13,
           mixBlendMode: "luminosity",
         }}
         aria-hidden="true"
