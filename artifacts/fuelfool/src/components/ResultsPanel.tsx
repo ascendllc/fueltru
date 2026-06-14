@@ -203,15 +203,35 @@ export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, onReset }
           <p className="text-muted-foreground mb-4 text-sm">
             Search and compare thousands of electric vehicles — new and used — all in one place:
           </p>
-          <a
-            href="https://www.cargurus.com/Cars/new/nl-New-Electric-Cars-d2454"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-bold text-primary-foreground hover:brightness-110 active:scale-95 transition-all shadow-md hover:shadow-primary/30 hover:shadow-lg"
-          >
-            <ExternalLink className="h-4 w-4" />
-            Browse Electric Cars on CarGurus
-          </a>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href="https://www.autotrader.com/electric-cars/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground hover:brightness-110 active:scale-95 transition-all shadow-md"
+            >
+              <ExternalLink className="h-4 w-4" />
+              AutoTrader
+            </a>
+            <a
+              href="https://www.cargurus.com/Cars/new/nl-New-Electric-Cars-d2454"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground hover:brightness-110 active:scale-95 transition-all shadow-md"
+            >
+              <ExternalLink className="h-4 w-4" />
+              CarGurus
+            </a>
+            <a
+              href="https://www.cars.com/research/fuel_type-electric/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground hover:brightness-110 active:scale-95 transition-all shadow-md"
+            >
+              <ExternalLink className="h-4 w-4" />
+              Cars.com
+            </a>
+          </div>
         </div>
       </motion.div>
     </motion.div>
