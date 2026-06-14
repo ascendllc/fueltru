@@ -36,6 +36,63 @@
     <!-- Android / PWA -->
     <meta name="theme-color" content="#1E3A8A" />
 
+    <!-- Structured data: WebApplication -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "FuelFool",
+      "url": "https://fuelfool.replit.app/",
+      "description": "Free gas trip cost calculator. Enter your ZIP for live EIA gas prices, pick your vehicle for EPA-rated MPG, enter your route for real driving distance, and see the exact fuel cost of your road trip.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any web browser",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "featureList": [
+        "Live regional gas prices from U.S. EIA",
+        "EPA-rated MPG for any vehicle year, make, model, and trim",
+        "Real driving distance via Google Maps",
+        "Round-trip fuel cost calculation",
+        "Electric vehicle cost comparison",
+        "Local EV dealership lookup"
+      ]
+    }
+    </script>
+    <!-- Structured data: HowTo -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Calculate Road Trip Gas Cost",
+      "description": "Calculate the exact fuel cost for any road trip using live gas prices, EPA MPG, and real driving distance.",
+      "totalTime": "PT2M",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Enter your ZIP code",
+          "text": "Enter your 5-digit ZIP code to retrieve the current regional average gas price from the U.S. Energy Information Administration (EIA) weekly survey."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Select your vehicle",
+          "text": "Choose your vehicle year, make, model, and trim to retrieve the EPA combined MPG rating from FuelEconomy.gov."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Enter your route",
+          "text": "Enter your starting address and destination. FuelFool uses Google Maps to calculate the actual driving distance on real roads."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "See your total gas cost",
+          "text": "FuelFool calculates: Gas Cost = (Miles ÷ MPG) × Price per Gallon, including round-trip and an EV cost comparison."
+        }
+      ]
+    }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">

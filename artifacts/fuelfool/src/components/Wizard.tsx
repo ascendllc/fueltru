@@ -102,6 +102,10 @@ export function Wizard() {
 
       <footer className="mt-16 text-center text-xs text-muted-foreground/50 border-t border-card-border pt-8">
         Data provided by U.S. Energy Information Administration, FuelEconomy.gov, and Google Maps.
+        {" · "}
+        <a href="/how-it-works" className="hover:text-muted-foreground underline underline-offset-2 transition-colors">How It Works</a>
+        {" · "}
+        <a href="/faq" className="hover:text-muted-foreground underline underline-offset-2 transition-colors">FAQ</a>
       </footer>
     </div>
   );

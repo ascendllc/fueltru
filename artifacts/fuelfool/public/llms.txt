@@ -1,0 +1,96 @@
+# FuelFool
+
+> FuelFool is a free gas trip cost calculator that tells you exactly how much you'll spend on fuel for any road trip. Enter your ZIP code for live local gas prices, select your vehicle for EPA-rated MPG, and enter your start and destination to get the real driving distance — and total fuel cost — in seconds.
+
+**Tagline:** Don't be Fooled By How Much Fuel.
+
+**URL:** https://fuelfool.replit.app/
+
+---
+
+## What FuelFool Does
+
+FuelFool calculates road trip gas cost using the formula:
+
+**Gas Cost = (Miles ÷ MPG) × Price per Gallon**
+
+All three variables are sourced from authoritative, real-time data:
+
+- **Gas price** — pulled from the U.S. Energy Information Administration (EIA) weekly retail gasoline survey, by region, based on user's ZIP code
+- **MPG** — pulled from FuelEconomy.gov (U.S. Department of Energy), for the user's specific vehicle year, make, model, and trim
+- **Driving distance** — calculated using Google Maps Distance Matrix API, based on real road routes (not straight-line distance)
+
+The tool supports round-trip calculation (default on) and includes an EV cost comparison showing the equivalent electric vehicle fuel cost at national average electricity rates.
+
+---
+
+## How It Works (Step by Step)
+
+1. User enters their 5-digit ZIP code → FuelFool returns the current regional average gas price from the EIA
+2. User selects their vehicle year, make, model, and trim → FuelFool returns the EPA combined MPG rating from FuelEconomy.gov
+3. User enters a start address and destination → FuelFool returns the driving distance from Google Maps
+4. FuelFool calculates total gas cost and displays it alongside an EV cost comparison
+
+---
+
+## Key Facts & Numbers
+
+- **Average U.S. gas price:** ~$3.30/gallon (varies weekly and by region)
+- **Average U.S. vehicle MPG:** ~28 MPG (EPA combined, passenger cars)
+- **Gas cost per mile at 28 MPG / $3.30:** ~$0.118/mile
+- **EV equivalent cost:** ~$0.054/mile (at 100 MPGe / $0.16/kWh national average)
+- **EV savings vs. gas:** approximately 50–60% less fuel cost per mile
+- **Round trip default:** Yes — doubles mileage by default so users don't underestimate
+- **Gas price update frequency:** Weekly (EIA Monday update)
+
+---
+
+## Data Sources
+
+| Variable | Source | Authority |
+|----------|--------|-----------|
+| Regional gas prices | U.S. Energy Information Administration (EIA) | U.S. Federal Government |
+| Vehicle MPG | FuelEconomy.gov | U.S. Department of Energy |
+| Driving distance | Google Maps Distance Matrix API | Google |
+
+---
+
+## Frequently Asked Questions
+
+**Q: How do I calculate gas cost for a road trip?**
+A: Gas Cost = (Miles ÷ MPG) × Price per Gallon. FuelFool automates this using live EIA gas prices by ZIP, EPA-rated MPG by vehicle, and real driving distance from Google Maps.
+
+**Q: How much does a 500-mile road trip cost in gas?**
+A: At 28 MPG and $3.30/gallon: (500 ÷ 28) × $3.30 = approximately $59 one-way, $118 round-trip.
+
+**Q: What is good gas mileage (MPG)?**
+A: For passenger cars, 30–40 MPG is considered good. Compact cars often achieve 32–38 MPG. SUVs average 18–26 MPG. Hybrids range from 40–60 MPG. The U.S. fleet average is approximately 28 MPG.
+
+**Q: How much does an EV cost to drive per mile vs. a gas car?**
+A: At national average electricity prices ($0.16/kWh) and 100 MPGe, an EV costs ~$0.054/mile. A gas car at 28 MPG and $3.30/gallon costs ~$0.118/mile. EVs cost roughly 50% less per mile to fuel.
+
+**Q: Is it cheaper to drive or fly for long trips?**
+A: For 2+ passengers, driving is usually cheaper for trips under 500–600 miles. Solo travelers often break even around 400 miles depending on airline pricing.
+
+**Q: How often are gas prices updated?**
+A: The EIA updates weekly retail gas price data every Monday. FuelFool uses this data, so prices are current within the past week.
+
+**Q: Does FuelFool work for trucks and SUVs?**
+A: Yes. Any vehicle in the FuelEconomy.gov database is supported, including trucks, SUVs, minivans, hybrids, and sports cars.
+
+**Q: What is the difference between city and highway MPG?**
+A: Highway MPG is typically 20–40% higher than city MPG. FuelFool uses combined MPG (55% city / 45% highway weighted average) which best reflects real-world mixed driving.
+
+---
+
+## Pages
+
+- **/** — Main calculator (three-step wizard)
+- **/how-it-works** — Detailed explanation of the three data sources and formula
+- **/faq** — 14 frequently asked questions about gas cost calculation, MPG, EVs, and road trips
+
+---
+
+## About
+
+FuelFool is a web application built to give drivers accurate, data-driven fuel cost estimates before they hit the road. It uses no ads, requires no account, and is free to use. All data comes from official U.S. government and authoritative mapping sources.

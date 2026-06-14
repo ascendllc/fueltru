@@ -3,6 +3,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
+import FAQ from "@/pages/FAQ";
+import HowItWorks from "@/pages/HowItWorks";
 import { Wizard } from "@/components/Wizard";
 import mapBg from "@assets/IMG_0122_1781468294605.jpeg";
 
@@ -33,6 +35,8 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/faq" component={FAQ} />
+      <Route path="/how-it-works" component={HowItWorks} />
       <Route component={NotFound} />
     </Switch>
   );
