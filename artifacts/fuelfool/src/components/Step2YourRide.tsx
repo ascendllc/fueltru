@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -58,9 +58,11 @@ export function Step2YourRide({ isActive, isComplete, onComplete }: Step2Props) 
     if (trim) setSubmittedTrimId(trim);
   };
 
-  if (mpgData && isActive && !isComplete) {
-    onComplete(mpgData.combined);
-  }
+  useEffect(() => {
+    if (mpgData && isActive && !isComplete) {
+      onComplete(mpgData.combined);
+    }
+  }, [mpgData, isActive, isComplete]);
 
   if (!isActive && !isComplete) return null;
 

@@ -96,9 +96,11 @@ export function Step3YourTrip({ isActive, isComplete, onComplete }: Step3Props) 
     }
   };
 
-  if (tripData && isActive && !isComplete) {
-    onComplete(tripData.miles, tripData.duration);
-  }
+  useEffect(() => {
+    if (tripData && isActive && !isComplete) {
+      onComplete(tripData.miles, tripData.duration);
+    }
+  }, [tripData, isActive, isComplete]);
 
   if (!isActive && !isComplete) return null;
 

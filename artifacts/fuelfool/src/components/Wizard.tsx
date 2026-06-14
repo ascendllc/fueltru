@@ -6,12 +6,14 @@ import { ResultsPanel } from "./ResultsPanel";
 import { motion } from "framer-motion";
 
 export function Wizard() {
+  const [resetKey, setResetKey] = useState(0);
   const [currentStep, setCurrentStep] = useState(1);
   const [gasPrice, setGasPrice] = useState<number | null>(null);
   const [mpg, setMpg] = useState<number | null>(null);
   const [distanceData, setDistanceData] = useState<{ distance: number; duration: string } | null>(null);
 
   const reset = () => {
+    setResetKey((k) => k + 1);
     setCurrentStep(1);
     setGasPrice(null);
     setMpg(null);
@@ -61,7 +63,7 @@ export function Wizard() {
         ))}
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6" key={resetKey}>
         <Step1FuelUp 
           isActive={currentStep === 1} 
           isComplete={currentStep > 1}

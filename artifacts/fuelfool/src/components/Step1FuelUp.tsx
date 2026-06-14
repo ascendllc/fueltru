@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -38,10 +38,11 @@ export function Step1FuelUp({ isActive, isComplete, onComplete }: Step1Props) {
     setSubmittedZip(values.zip);
   }
 
-  // Handle successful data fetch
-  if (gasPriceData && isActive && !isComplete) {
-    onComplete(gasPriceData.price);
-  }
+  useEffect(() => {
+    if (gasPriceData && isActive && !isComplete) {
+      onComplete(gasPriceData.price);
+    }
+  }, [gasPriceData, isActive, isComplete]);
 
   if (!isActive && !isComplete) return null;
 
