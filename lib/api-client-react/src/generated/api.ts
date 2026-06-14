@@ -17,7 +17,9 @@ import type {
 
 import type {
   ApiError,
+  EvDealershipList,
   GasPrice,
+  GetEvDealershipsParams,
   GetGasPriceParams,
   GetTripDistanceParams,
   GetVehicleMakesParams,
@@ -695,6 +697,46 @@ export function useGetTripDistance<TData = Awaited<ReturnType<typeof getTripDist
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+export const getGetEvDealershipsUrl = (params: GetEvDealershipsParams) => {
+  const normalizedParams = new URLSearchParams();
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) normalizedParams.append(key, value === null ? 'null' : value.toString());
+  });
+  const stringifiedParams = normalizedParams.toString();
+  return stringifiedParams.length > 0 ? `/api/ev-dealerships?${stringifiedParams}` : `/api/ev-dealerships`;
+}
+
+export const getEvDealerships = async (params: GetEvDealershipsParams, options?: RequestInit): Promise<EvDealershipList> => {
+  return customFetch<EvDealershipList>(getGetEvDealershipsUrl(params), { ...options, method: 'GET' });
+}
+
+export const getGetEvDealershipsQueryKey = (params?: GetEvDealershipsParams) => {
+  return [`/api/ev-dealerships`, ...(params ? [params] : [])] as const;
+}
+
+export const getGetEvDealershipsQueryOptions = <TData = Awaited<ReturnType<typeof getEvDealerships>>, TError = ErrorType<ApiError>>(
+  params: GetEvDealershipsParams,
+  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getEvDealerships>>, TError, TData>, request?: SecondParameter<typeof customFetch> }
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetEvDealershipsQueryKey(params);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getEvDealerships>>> = ({ signal }) => getEvDealerships(params, { signal, ...requestOptions });
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getEvDealerships>>, TError, TData> & { queryKey: QueryKey };
+}
+
+export type GetEvDealershipsQueryResult = NonNullable<Awaited<ReturnType<typeof getEvDealerships>>>
+export type GetEvDealershipsQueryError = ErrorType<ApiError>
+
+export function useGetEvDealerships<TData = Awaited<ReturnType<typeof getEvDealerships>>, TError = ErrorType<ApiError>>(
+  params: GetEvDealershipsParams,
+  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getEvDealerships>>, TError, TData>, request?: SecondParameter<typeof customFetch> }
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetEvDealershipsQueryOptions(params, options);
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey };
   return { ...query, queryKey: queryOptions.queryKey };
 }
 

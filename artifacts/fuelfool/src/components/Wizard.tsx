@@ -10,6 +10,7 @@ export function Wizard() {
   const [resetKey, setResetKey] = useState(0);
   const [currentStep, setCurrentStep] = useState(1);
   const [gasPrice, setGasPrice] = useState<number | null>(null);
+  const [zip, setZip] = useState<string | null>(null);
   const [mpg, setMpg] = useState<number | null>(null);
   const [distanceData, setDistanceData] = useState<{ distance: number; duration: string } | null>(null);
 
@@ -17,6 +18,7 @@ export function Wizard() {
     setResetKey((k) => k + 1);
     setCurrentStep(1);
     setGasPrice(null);
+    setZip(null);
     setMpg(null);
     setDistanceData(null);
   };
@@ -71,7 +73,7 @@ export function Wizard() {
         <Step1FuelUp 
           isActive={currentStep === 1} 
           isComplete={currentStep > 1}
-          onComplete={(price) => { setGasPrice(price); setCurrentStep(2); }}
+          onComplete={(price, zipCode) => { setGasPrice(price); setZip(zipCode); setCurrentStep(2); }}
         />
         
         <Step2YourRide 
@@ -87,12 +89,13 @@ export function Wizard() {
         />
       </div>
 
-      {currentStep === 4 && gasPrice && mpg && distanceData && (
+      {currentStep === 4 && gasPrice && mpg && distanceData && zip && (
         <ResultsPanel
           gasPrice={gasPrice}
           mpg={mpg}
           distance={distanceData.distance}
           duration={distanceData.duration}
+          zip={zip}
           onReset={reset}
         />
       )}

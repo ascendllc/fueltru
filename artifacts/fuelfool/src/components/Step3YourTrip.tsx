@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, MapPin } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -13,71 +13,37 @@ interface Step3Props {
   onComplete: (distance: number, duration: string) => void;
 }
 
-function loadGoogleMapsScript(apiKey: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    if (
-      typeof google !== "undefined" &&
-      typeof google.maps !== "undefined" &&
-      typeof google.maps.places !== "undefined"
-    ) {
-      resolve();
-      return;
-    }
-    const existing = document.getElementById("google-maps-script");
-    if (existing) {
-      existing.addEventListener("load", () => resolve());
-      existing.addEventListener("error", reject);
-      return;
-    }
-    const script = document.createElement("script");
-    script.id = "google-maps-script";
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
-    script.async = true;
-    script.defer = true;
-    script.onload = () => resolve();
-    script.onerror = reject;
-    document.head.appendChild(script);
-  });
+type Suggestion = { description: string; placeId: string };
+
+const BASE_URL = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
+
+async function fetchSuggestions(q: string): Promise<Suggestion[]> {
+  if (!q || q.trim().length < 2) return [];
+  try {
+    const res = await fetch(`${BASE_URL}/api/autocomplete?q=${encodeURIComponent(q.trim())}`);
+    if (!res.ok) return [];
+    return await res.json() as Suggestion[];
+  } catch {
+    return [];
+  }
 }
 
-type Prediction = { description: string; place_id: string };
-
-function useAddressAutocomplete(mapsLoaded: boolean) {
-  const serviceRef = useRef<google.maps.places.AutocompleteService | null>(null);
-  const [suggestions, setSuggestions] = useState<Prediction[]>([]);
+function useAddressAutocomplete() {
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [open, setOpen] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => {
-    if (mapsLoaded && !serviceRef.current && typeof google !== "undefined") {
-      serviceRef.current = new google.maps.places.AutocompleteService();
-    }
-  }, [mapsLoaded]);
-
-  const fetchSuggestions = useCallback((input: string) => {
+  const query = useCallback((input: string) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    if (!input || input.length < 2) {
+    if (!input || input.trim().length < 2) {
       setSuggestions([]);
       setOpen(false);
       return;
     }
-    debounceRef.current = setTimeout(() => {
-      if (!serviceRef.current) return;
-      serviceRef.current.getPlacePredictions(
-        { input, types: ["geocode", "establishment"] },
-        (predictions, status) => {
-          if (
-            status === (google.maps.places.PlacesServiceStatus as any).OK &&
-            predictions
-          ) {
-            setSuggestions(predictions.slice(0, 6).map((p) => ({ description: p.description, place_id: p.place_id })));
-            setOpen(true);
-          } else {
-            setSuggestions([]);
-            setOpen(false);
-          }
-        }
-      );
+    debounceRef.current = setTimeout(async () => {
+      const results = await fetchSuggestions(input);
+      setSuggestions(results);
+      setOpen(results.length > 0);
     }, 220);
   }, []);
 
@@ -86,27 +52,17 @@ function useAddressAutocomplete(mapsLoaded: boolean) {
     setOpen(false);
   }, []);
 
-  return { suggestions, open, fetchSuggestions, clear };
+  return { suggestions, open, query, clear };
 }
 
 export function Step3YourTrip({ isActive, isComplete, onComplete }: Step3Props) {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [submittedParams, setSubmittedParams] = useState<{ origin: string; destination: string } | null>(null);
-  const [mapsLoaded, setMapsLoaded] = useState(false);
   const [isRoundTrip, setIsRoundTrip] = useState(true);
 
-  const originAC = useAddressAutocomplete(mapsLoaded);
-  const destAC = useAddressAutocomplete(mapsLoaded);
-
-  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
-
-  useEffect(() => {
-    if (!isActive || isComplete || !apiKey) return;
-    loadGoogleMapsScript(apiKey)
-      .then(() => setMapsLoaded(true))
-      .catch(() => setMapsLoaded(false));
-  }, [isActive, isComplete, apiKey]);
+  const originAC = useAddressAutocomplete();
+  const destAC = useAddressAutocomplete();
 
   const { data: tripData, isLoading, error } = useGetTripDistance(
     submittedParams!,
@@ -116,9 +72,7 @@ export function Step3YourTrip({ isActive, isComplete, onComplete }: Step3Props) 
   const effectiveMiles = tripData ? (isRoundTrip ? tripData.miles * 2 : tripData.miles) : 0;
 
   const handleSubmit = () => {
-    if (origin && destination) {
-      setSubmittedParams({ origin, destination });
-    }
+    if (origin && destination) setSubmittedParams({ origin, destination });
   };
 
   useEffect(() => {
@@ -167,7 +121,7 @@ export function Step3YourTrip({ isActive, isComplete, onComplete }: Step3Props) 
             testId="input-origin"
             suggestions={originAC.suggestions}
             open={originAC.open}
-            onChange={(val) => { setOrigin(val); originAC.fetchSuggestions(val); }}
+            onChange={(val) => { setOrigin(val); originAC.query(val); }}
             onSelect={(val) => { setOrigin(val); originAC.clear(); }}
             onBlur={() => setTimeout(originAC.clear, 150)}
           />
@@ -179,7 +133,7 @@ export function Step3YourTrip({ isActive, isComplete, onComplete }: Step3Props) 
             testId="input-destination"
             suggestions={destAC.suggestions}
             open={destAC.open}
-            onChange={(val) => { setDestination(val); destAC.fetchSuggestions(val); }}
+            onChange={(val) => { setDestination(val); destAC.query(val); }}
             onSelect={(val) => { setDestination(val); destAC.clear(); }}
             onBlur={() => setTimeout(destAC.clear, 150)}
           />
@@ -201,14 +155,12 @@ export function Step3YourTrip({ isActive, isComplete, onComplete }: Step3Props) 
       ) : (
         <div className="flex flex-col space-y-3">
           <div className="text-sm text-muted-foreground truncate">{origin} → {destination}</div>
-          <div className="flex items-end gap-4">
-            <div>
-              <div className="text-3xl font-bold text-foreground" data-testid="display-distance">
-                {effectiveMiles} <span className="text-lg text-muted-foreground font-normal">miles</span>
-              </div>
-              <div className="text-xs text-muted-foreground mt-0.5">
-                {isRoundTrip ? `${tripData?.miles} mi each way` : "one way"} · Est. {tripData?.duration}
-              </div>
+          <div>
+            <div className="text-3xl font-bold text-foreground" data-testid="display-distance">
+              {effectiveMiles} <span className="text-lg text-muted-foreground font-normal">miles</span>
+            </div>
+            <div className="text-xs text-muted-foreground mt-0.5">
+              {isRoundTrip ? `${tripData?.miles} mi each way` : "one way"} · Est. {tripData?.duration}
             </div>
           </div>
           {RoundTripToggle}
@@ -224,7 +176,7 @@ interface AddressFieldProps {
   value: string;
   placeholder: string;
   testId: string;
-  suggestions: Prediction[];
+  suggestions: Suggestion[];
   open: boolean;
   onChange: (val: string) => void;
   onSelect: (val: string) => void;
@@ -256,7 +208,7 @@ function AddressField({ id, label, value, placeholder, testId, suggestions, open
             >
               {suggestions.map((s) => (
                 <li
-                  key={s.place_id}
+                  key={s.placeId}
                   onMouseDown={() => onSelect(s.description)}
                   className="flex items-center gap-2 px-3 py-2.5 text-sm text-popover-foreground cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors"
                 >

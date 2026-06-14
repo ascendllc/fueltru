@@ -87,3 +87,15 @@ origin: string;
 destination: string;
 };
 
+export interface EvDealership {
+  name: string;
+  address: string;
+  mapsUrl: string;
+}
+
+export type EvDealershipList = EvDealership[];
+
+export type GetEvDealershipsParams = {
+zip: string;
+};
+

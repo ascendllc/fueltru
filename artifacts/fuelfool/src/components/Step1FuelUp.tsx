@@ -16,7 +16,7 @@ const formSchema = z.object({
 interface Step1Props {
   isActive: boolean;
   isComplete: boolean;
-  onComplete: (price: number) => void;
+  onComplete: (price: number, zip: string) => void;
 }
 
 export function Step1FuelUp({ isActive, isComplete, onComplete }: Step1Props) {
@@ -39,8 +39,8 @@ export function Step1FuelUp({ isActive, isComplete, onComplete }: Step1Props) {
   }
 
   useEffect(() => {
-    if (gasPriceData && isActive && !isComplete) {
-      onComplete(gasPriceData.price);
+    if (gasPriceData && isActive && !isComplete && submittedZip) {
+      onComplete(gasPriceData.price, submittedZip);
     }
   }, [gasPriceData, isActive, isComplete]);
 
