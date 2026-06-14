@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "wouter";
 import { JsonLd } from "@/components/JsonLd";
+import { PageHeader } from "@/components/PageHeader";
 import mapBg from "@assets/IMG_0122_1781468294605.jpeg";
 
 const howToSchema = {
@@ -127,13 +128,11 @@ export default function HowItWorks() {
       <JsonLd data={webAppSchema} />
 
       <div className="relative z-10 max-w-3xl mx-auto px-4 py-16">
-        <Link href="/" className="text-xs text-muted-foreground/60 hover:text-muted-foreground mb-10 block transition-colors">
-          ← Back to FuelFool
-        </Link>
+        <PageHeader />
 
-        <h1 className="text-3xl font-bold text-foreground mb-2">
+        <h2 className="text-3xl font-bold text-foreground mb-2">
           How FuelFool Works
-        </h1>
+        </h2>
         <p className="text-muted-foreground mb-4 text-sm">
           Three data sources. One accurate answer.
         </p>
