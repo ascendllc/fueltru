@@ -71,13 +71,35 @@ export function Step3YourTrip({ isActive, isComplete, onComplete }: Step3Props) 
 
   const effectiveMiles = tripData ? (isRoundTrip ? tripData.miles * 2 : tripData.miles) : 0;
 
+  function parseDurationToMinutes(dur: string): number {
+    let total = 0;
+    const hours = dur.match(/(\d+)\s*hour/);
+    const mins = dur.match(/(\d+)\s*min/);
+    if (hours) total += parseInt(hours[1]) * 60;
+    if (mins) total += parseInt(mins[1]);
+    return total;
+  }
+
+  function formatMinutes(total: number): string {
+    const h = Math.floor(total / 60);
+    const m = total % 60;
+    if (h === 0) return `${m} min`;
+    if (m === 0) return `${h} hr`;
+    return `${h} hr ${m} min`;
+  }
+
+  function getEffectiveDuration(dur: string): string {
+    if (!isRoundTrip) return dur;
+    return formatMinutes(parseDurationToMinutes(dur) * 2);
+  }
+
   const handleSubmit = () => {
     if (origin && destination) setSubmittedParams({ origin, destination });
   };
 
   useEffect(() => {
     if (tripData && isActive && !isComplete) {
-      onComplete(effectiveMiles, tripData.duration);
+      onComplete(effectiveMiles, getEffectiveDuration(tripData.duration));
     }
   }, [tripData, isActive, isComplete, isRoundTrip]);
 
@@ -160,7 +182,7 @@ export function Step3YourTrip({ isActive, isComplete, onComplete }: Step3Props) 
               {effectiveMiles} <span className="text-lg text-muted-foreground font-normal">miles</span>
             </div>
             <div className="text-xs text-muted-foreground mt-0.5">
-              {isRoundTrip ? `${tripData?.miles} mi each way` : "one way"} · Est. {tripData?.duration}
+              {isRoundTrip ? `${tripData?.miles} mi each way` : "one way"} · Est. {tripData && getEffectiveDuration(tripData.duration)}
             </div>
           </div>
           {RoundTripToggle}
