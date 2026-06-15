@@ -1,0 +1,7 @@
+artifacts/api-server
+artifacts/mockup-sandbox
+.agents
+.local
+.cache
+.config
+attached_assets/screenshots
