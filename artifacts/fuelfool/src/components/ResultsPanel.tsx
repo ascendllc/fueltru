@@ -205,7 +205,7 @@ export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, onReset }
           </p>
           <div className="flex flex-wrap gap-3">
             <a
-              href="https://www.autotrader.com/electric-cars/"
+              href="https://www.autotrader.com/cars-for-sale/electric"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground hover:brightness-110 active:scale-95 transition-all shadow-md"
@@ -214,7 +214,7 @@ export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, onReset }
               AutoTrader
             </a>
             <a
-              href="https://www.cargurus.com/Cars/new/nl-New-Electric-Cars-d2454"
+              href="https://www.cargurus.com/shop/electric-cars"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground hover:brightness-110 active:scale-95 transition-all shadow-md"
@@ -223,7 +223,7 @@ export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, onReset }
               CarGurus
             </a>
             <a
-              href="https://www.cars.com/research/fuel_type-electric/"
+              href="https://www.cars.com/electric-cars/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground hover:brightness-110 active:scale-95 transition-all shadow-md"
