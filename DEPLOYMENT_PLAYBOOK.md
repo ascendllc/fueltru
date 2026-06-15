@@ -286,6 +286,30 @@ Push files **sequentially** (not in parallel) to avoid SHA conflicts on the same
 
 ---
 
+## Vercel Build Gotchas
+
+### Always push an updated `pnpm-lock.yaml` after any `package.json` change
+Vercel runs `pnpm install --frozen-lockfile` by default. If `pnpm-lock.yaml` is out of sync with any `package.json` in the monorepo, the build fails immediately.
+
+**Symptom:**
+```
+ERR_PNPM_OUTDATED_LOCKFILE  Cannot install with "frozen-lockfile" because
+pnpm-lock.yaml is not up to date with artifacts/api-server/package.json
+
+Error: Command "pnpm install --frozen-lockfile" exited with 1
+```
+
+**Fix:** Any time you change a `package.json` (add/move/remove a dependency), run `pnpm install` locally to regenerate the lockfile, then push `pnpm-lock.yaml` to GitHub along with the `package.json` change.
+
+```bash
+pnpm install --no-frozen-lockfile
+# then commit and push pnpm-lock.yaml
+```
+
+This is especially easy to miss when moving a package between `dependencies` and `devDependencies` — the package doesn't get re-downloaded, but the lockfile structure changes and Vercel will reject it.
+
+---
+
 ## Deployment Checklist — New Project
 
 - [ ] Create Railway service, note Project/Environment/Service IDs
