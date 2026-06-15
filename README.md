@@ -35,13 +35,19 @@ pnpm --filter @workspace/fuelfool dev
 
 ---
 
+## GitHub repository
+
+The code is hosted at: **https://github.com/ascendllc/fuelfool**
+
+---
+
 ## Deploying to production
 
 ### Prerequisites
 
 - [Vercel account](https://vercel.com) (free tier works)
 - [Railway account](https://railway.app) (free tier works)
-- Your GitHub repo connected to both platforms
+- GitHub repo already pushed: `https://github.com/ascendllc/fuelfool`
 
 ### Step 1 — Deploy the API server on Railway
 
