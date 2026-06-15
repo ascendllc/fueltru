@@ -91,6 +91,8 @@ export interface EvDealership {
   name: string;
   address: string;
   mapsUrl: string;
+  distanceMiles?: number;
+  isTesla?: boolean;
 }
 
 export type EvDealershipList = EvDealership[];
