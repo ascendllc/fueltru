@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "KoxLp5wrijRoK_wKzHsbj"
+uri = "file://DEPLOYMENT_PLAYBOOK.md"
+type = "text"
+title = "Railway + Vercel Deployment Playbook"
