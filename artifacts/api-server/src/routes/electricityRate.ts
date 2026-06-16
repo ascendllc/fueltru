@@ -2,17 +2,20 @@ import { Router } from "express";
 
 const router = Router();
 
-async function fetchEiaElectricityRate(stateId: string, apiKey: string): Promise<number | null> {
+async function fetchEiaElectricityRate(stateId: string | null, apiKey: string): Promise<number | null> {
   const params = new URLSearchParams({
     api_key: apiKey,
     frequency: "monthly",
     "data[0]": "price",
-    "facets[stateid][]": stateId,
-    "facets[sectorName][]": "residential",
+    "facets[sectorid][]": "RES",
     "sort[0][column]": "period",
     "sort[0][direction]": "desc",
     length: "1",
   });
+
+  if (stateId) {
+    params.set("facets[stateid][]", stateId);
+  }
 
   const url = `https://api.eia.gov/v2/electricity/retail-sales/data/?${params.toString()}`;
   const res = await fetch(url);
@@ -58,7 +61,7 @@ router.get("/electricity-rate", async (req, res) => {
     let rate = await fetchEiaElectricityRate(state, apiKey);
 
     if (rate === null) {
-      rate = await fetchEiaElectricityRate("US", apiKey);
+      rate = await fetchEiaElectricityRate(null, apiKey);
     }
 
     if (rate === null) {
