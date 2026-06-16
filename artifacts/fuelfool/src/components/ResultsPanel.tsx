@@ -40,7 +40,7 @@ function SharePanel({ cost, distance, evTripCost }: {
 
   const handleNativeShare = async () => {
     try {
-      await navigator.share({ title: "FuelFool — My Trip Cost", text: shortText, url });
+      await navigator.share({ title: "FuelFool — My Trip Cost", text: shortText });
     } catch {}
   };
 
