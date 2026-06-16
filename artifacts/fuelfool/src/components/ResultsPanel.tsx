@@ -27,15 +27,14 @@ const KWH_PER_GALLON_EQUIV = 33.7;
 const ELECTRICITY_COST_PER_KWH = 0.16;
 const EV_COST_PER_MILE = (KWH_PER_GALLON_EQUIV / EV_MPGE) * ELECTRICITY_COST_PER_KWH;
 
-function SharePanel({ cost, distance, comparisonQty, comparisonName }: {
+function SharePanel({ cost, distance, evTripCost }: {
   cost: number;
   distance: number;
-  comparisonQty: string;
-  comparisonName: string;
+  evTripCost: number;
 }) {
   const url = "https://fuelfool.com";
-  const text = `I just found out my ${distance}-mile trip costs $${cost.toFixed(2)} in gas — basically burning ${comparisonQty} ${comparisonName}! 🚗⛽ Calculate yours at ${url}`;
-  const shortText = `My ${distance}-mi trip costs $${cost.toFixed(2)} in gas. Don't be fooled — calculate yours at ${url} 🚗⛽`;
+  const text = `My ${distance}-mi trip costs $${cost.toFixed(2)} in gas. If I had an EV it would cost $${evTripCost.toFixed(2)}. Don't be fooled — calculate yours at ${url}`;
+  const shortText = text;
 
   const canNativeShare = typeof navigator !== "undefined" && !!navigator.share;
 
@@ -263,8 +262,7 @@ export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, onReset }
       <SharePanel
         cost={cost}
         distance={distance}
-        comparisonQty={comparisonQty}
-        comparisonName={comparison.name}
+        evTripCost={evTripCost}
       />
 
       {/* Dealerships + CarGurus card */}
