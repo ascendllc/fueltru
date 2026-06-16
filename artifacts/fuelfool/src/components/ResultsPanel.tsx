@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useCostCounter } from "@/hooks/use-cost-counter";
 import { useGetEvDealerships, getGetEvDealershipsQueryKey } from "@workspace/api-client-react";
-import { Zap, MapPin, ExternalLink, Car } from "lucide-react";
+import { Zap, MapPin, ExternalLink, Car, Share2, Mail, MessageSquare } from "lucide-react";
 
 interface ResultsPanelProps {
   gasPrice: number;
@@ -26,6 +26,106 @@ const EV_MPGE = 100;
 const KWH_PER_GALLON_EQUIV = 33.7;
 const ELECTRICITY_COST_PER_KWH = 0.16;
 const EV_COST_PER_MILE = (KWH_PER_GALLON_EQUIV / EV_MPGE) * ELECTRICITY_COST_PER_KWH;
+
+function SharePanel({ cost, distance, comparisonQty, comparisonName }: {
+  cost: number;
+  distance: number;
+  comparisonQty: string;
+  comparisonName: string;
+}) {
+  const url = "https://fuelfool.com";
+  const text = `I just found out my ${distance}-mile trip costs $${cost.toFixed(2)} in gas — basically burning ${comparisonQty} ${comparisonName}! 🚗⛽ Calculate yours at ${url}`;
+  const shortText = `My ${distance}-mi trip costs $${cost.toFixed(2)} in gas. Don't be fooled — calculate yours at ${url} 🚗⛽`;
+
+  const canNativeShare = typeof navigator !== "undefined" && !!navigator.share;
+
+  const handleNativeShare = async () => {
+    try {
+      await navigator.share({ title: "FuelFool — My Trip Cost", text: shortText, url });
+    } catch {}
+  };
+
+  const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(shortText)}`;
+  const emailUrl = `mailto:?subject=${encodeURIComponent("Check out my gas cost on FuelFool!")}&body=${encodeURIComponent(`${text}\n\n${url}`)}`;
+  const smsUrl = `sms:?body=${encodeURIComponent(shortText)}`;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.7, ease: "easeOut" }}
+      className="rounded-xl border border-primary/30 bg-card p-8 shadow-lg text-center"
+    >
+      <div className="flex items-center justify-center gap-3 mb-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/15">
+          <Share2 className="h-5 w-5 text-primary" />
+        </div>
+        <h3 className="text-2xl font-display font-bold text-foreground">Spread the Fuel Foolery</h3>
+      </div>
+      <p className="text-muted-foreground text-sm mb-6 max-w-md mx-auto">
+        Know someone who has no idea what their daily commute actually costs them? Send them a reality check.
+      </p>
+
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        {canNativeShare && (
+          <Button
+            onClick={handleNativeShare}
+            size="lg"
+            className="hover-elevate hover:brightness-110 active:scale-95 transition-all gap-2"
+          >
+            <Share2 className="h-4 w-4" />
+            Share My Results
+          </Button>
+        )}
+
+        {/* X / Twitter */}
+        <a
+          href={xUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 rounded-lg border border-card-border bg-background px-4 py-2.5 text-sm font-semibold text-foreground hover:border-primary/50 hover:bg-primary/5 active:scale-95 transition-all"
+        >
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.733-8.835L1.254 2.25H8.08l4.259 5.631 5.905-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+          Post on X
+        </a>
+
+        {/* Facebook */}
+        <a
+          href={fbUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 rounded-lg border border-card-border bg-background px-4 py-2.5 text-sm font-semibold text-foreground hover:border-primary/50 hover:bg-primary/5 active:scale-95 transition-all"
+        >
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+          </svg>
+          Share on Facebook
+        </a>
+
+        {/* Email */}
+        <a
+          href={emailUrl}
+          className="inline-flex items-center gap-2 rounded-lg border border-card-border bg-background px-4 py-2.5 text-sm font-semibold text-foreground hover:border-primary/50 hover:bg-primary/5 active:scale-95 transition-all"
+        >
+          <Mail className="h-4 w-4" />
+          Email
+        </a>
+
+        {/* SMS / Text */}
+        <a
+          href={smsUrl}
+          className="inline-flex items-center gap-2 rounded-lg border border-card-border bg-background px-4 py-2.5 text-sm font-semibold text-foreground hover:border-primary/50 hover:bg-primary/5 active:scale-95 transition-all"
+        >
+          <MessageSquare className="h-4 w-4" />
+          Text a Friend
+        </a>
+      </div>
+    </motion.div>
+  );
+}
 
 export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, onReset }: ResultsPanelProps) {
   const gallons = distance / mpg;
@@ -158,6 +258,14 @@ export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, onReset }
           compared to your current vehicle.
         </p>
       </motion.div>
+
+      {/* Share card */}
+      <SharePanel
+        cost={cost}
+        distance={distance}
+        comparisonQty={comparisonQty}
+        comparisonName={comparison.name}
+      />
 
       {/* Dealerships + CarGurus card */}
       <motion.div
