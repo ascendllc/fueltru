@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useCostCounter } from "@/hooks/use-cost-counter";
@@ -24,8 +25,7 @@ const COMPARISONS = [
 
 const EV_MPGE = 100;
 const KWH_PER_GALLON_EQUIV = 33.7;
-const ELECTRICITY_COST_PER_KWH = 0.16;
-const EV_COST_PER_MILE = (KWH_PER_GALLON_EQUIV / EV_MPGE) * ELECTRICITY_COST_PER_KWH;
+const NATIONAL_FALLBACK_RATE = 0.16;
 
 function SharePanel({ cost, distance, evTripCost }: {
   cost: number;
@@ -127,11 +127,27 @@ function SharePanel({ cost, distance, evTripCost }: {
 }
 
 export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, onReset }: ResultsPanelProps) {
+  const [electricityRate, setElectricityRate] = useState(NATIONAL_FALLBACK_RATE);
+
+  useEffect(() => {
+    const apiBase = import.meta.env.VITE_API_BASE_URL ?? "";
+    fetch(`${apiBase}/api/electricity-rate?zip=${zip}`)
+      .then((r) => r.json())
+      .then((data: { rate?: number }) => {
+        if (typeof data.rate === "number" && data.rate > 0) {
+          setElectricityRate(data.rate);
+        }
+      })
+      .catch(() => {});
+  }, [zip]);
+
+  const evCostPerMile = (KWH_PER_GALLON_EQUIV / EV_MPGE) * electricityRate;
+
   const gallons = distance / mpg;
   const cost = gallons * gasPrice;
   const animatedCost = useCostCounter(cost);
 
-  const evTripCost = distance * EV_COST_PER_MILE;
+  const evTripCost = distance * evCostPerMile;
   const evSavings = cost - evTripCost;
 
   const { data: dealerships = [] } = useGetEvDealerships(
@@ -223,9 +239,9 @@ export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, onReset }
         <p className="text-muted-foreground mb-6 leading-relaxed">
           Electric vehicles average <strong className="text-foreground">{EV_MPGE} MPGe</strong> — nearly{" "}
           <strong className="text-foreground">{Math.round(EV_MPGE / mpg)}× more efficient</strong> than your{" "}
-          {mpg} MPG vehicle. At the national average electricity rate of{" "}
-          <strong className="text-foreground">${ELECTRICITY_COST_PER_KWH}/kWh</strong>, EVs cost about{" "}
-          <strong className="text-foreground">{(EV_COST_PER_MILE * 100).toFixed(1)}¢ per mile</strong> to
+          {mpg} MPG vehicle. At your local electricity rate of{" "}
+          <strong className="text-foreground">${electricityRate.toFixed(2)}/kWh</strong>, EVs cost about{" "}
+          <strong className="text-foreground">{(evCostPerMile * 100).toFixed(1)}¢ per mile</strong> to
           run — a fraction of what gasoline costs. They also have{" "}
           <strong className="text-foreground">far fewer moving parts</strong>, meaning dramatically lower
           maintenance: no oil changes, no transmission service, no exhaust repairs.
@@ -252,7 +268,7 @@ export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, onReset }
         <p className="text-sm text-muted-foreground italic">
           Over 15,000 miles/year that's roughly{" "}
           <strong className="text-foreground not-italic">
-            ${Math.round((EV_COST_PER_MILE - gasPrice / mpg) * -15000).toLocaleString()} in annual fuel savings
+            ${Math.round((evCostPerMile - gasPrice / mpg) * -15000).toLocaleString()} in annual fuel savings
           </strong>{" "}
           compared to your current vehicle.
         </p>
