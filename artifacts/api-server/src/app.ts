@@ -27,9 +27,11 @@ app.use(
 );
 
 const DEFAULT_ORIGINS = [
+  "https://fueltru.com",
+  "https://www.fueltru.com",
+  "https://fuelfool.vercel.app",
   "https://fuelfool.com",
   "https://www.fuelfool.com",
-  "https://fuelfool.vercel.app",
 ];
 
 const corsOrigins = process.env.CORS_ORIGIN
