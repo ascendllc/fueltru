@@ -43,54 +43,60 @@ router.get("/ev-dealerships", async (req, res) => {
   }
 
   try {
+    // Stage 1: geocode ZIP to get coordinates for location-biased searches
     const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${zip}&key=${apiKey}`;
-    const teslaUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(`Tesla dealership near ${zip}`)}&key=${apiKey}`;
-    const rivianUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(`Rivian dealership near ${zip}`)}&key=${apiKey}`;
-    const polestarUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(`Polestar dealership near ${zip}`)}&key=${apiKey}`;
-    const evUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(`electric vehicle car dealership near ${zip}`)}&key=${apiKey}`;
-
-    const [geocodeRes, teslaRes, rivianRes, polestarRes, evRes] = await Promise.all([
-      fetch(geocodeUrl),
-      fetch(teslaUrl),
-      fetch(rivianUrl),
-      fetch(polestarUrl),
-      fetch(evUrl),
-    ]);
-
-    const [geocodeData, teslaData, rivianData, polestarData, evData] = await Promise.all([
-      geocodeRes.json() as Promise<GeocodeResponse>,
-      teslaRes.json() as Promise<PlacesResponse>,
-      rivianRes.json() as Promise<PlacesResponse>,
-      polestarRes.json() as Promise<PlacesResponse>,
-      evRes.json() as Promise<PlacesResponse>,
-    ]);
-
+    const geocodeData = await fetch(geocodeUrl).then((r) => r.json()) as GeocodeResponse;
     const zipLocation = geocodeData.results?.[0]?.geometry?.location;
 
-    function buildBrandDealer(
-      results: PlacesResult[],
-      brandKeyword: string,
-      flag: Record<string, boolean>,
-    ) {
-      const match = results.find((r) => r.name.toLowerCase().includes(brandKeyword)) ?? results[0];
-      if (!match) return null;
-      const loc = match.geometry?.location;
+    // Build location bias param (250 km radius covers most of a state)
+    const locParam = zipLocation
+      ? `&location=${zipLocation.lat},${zipLocation.lng}&radius=250000`
+      : "";
+
+    // Stage 2: all searches in parallel, now with location bias
+    const base = "https://maps.googleapis.com/maps/api/place/textsearch/json";
+    const [teslaData, rivianData, polestarData, evData] = await Promise.all([
+      fetch(`${base}?query=${encodeURIComponent("Tesla dealership")}${locParam}&key=${apiKey}`).then((r) => r.json()) as Promise<PlacesResponse>,
+      fetch(`${base}?query=${encodeURIComponent("Rivian dealership")}${locParam}&key=${apiKey}`).then((r) => r.json()) as Promise<PlacesResponse>,
+      fetch(`${base}?query=${encodeURIComponent("Polestar dealership")}${locParam}&key=${apiKey}`).then((r) => r.json()) as Promise<PlacesResponse>,
+      fetch(`${base}?query=${encodeURIComponent("electric vehicle car dealership")}${locParam}&key=${apiKey}`).then((r) => r.json()) as Promise<PlacesResponse>,
+    ]);
+
+    function closestByDistance(results: PlacesResult[], brandKeyword: string): PlacesResult | null {
+      const matches = results.filter((r) => r.name.toLowerCase().includes(brandKeyword));
+      const pool = matches.length > 0 ? matches : results;
+      if (pool.length === 0) return null;
+      if (!zipLocation) return pool[0];
+      return pool.reduce((best, r) => {
+        const bLoc = best.geometry?.location;
+        const rLoc = r.geometry?.location;
+        if (!rLoc) return best;
+        if (!bLoc) return r;
+        const dBest = haversineMiles(zipLocation.lat, zipLocation.lng, bLoc.lat, bLoc.lng);
+        const dR = haversineMiles(zipLocation.lat, zipLocation.lng, rLoc.lat, rLoc.lng);
+        return dR < dBest ? r : best;
+      });
+    }
+
+    function buildBrandDealer(result: PlacesResult | null, flag: Record<string, boolean>) {
+      if (!result) return null;
+      const loc = result.geometry?.location;
       const distanceMiles =
         zipLocation && loc
           ? Math.round(haversineMiles(zipLocation.lat, zipLocation.lng, loc.lat, loc.lng) * 10) / 10
           : undefined;
       return {
-        name: match.name,
-        address: match.formatted_address,
-        mapsUrl: `https://www.google.com/maps/place/?q=place_id:${match.place_id}`,
+        name: result.name,
+        address: result.formatted_address,
+        mapsUrl: `https://www.google.com/maps/place/?q=place_id:${result.place_id}`,
         distanceMiles,
         ...flag,
       };
     }
 
-    const teslaDealer = buildBrandDealer(teslaData.results ?? [], "tesla", { isTesla: true });
-    const rivianDealer = buildBrandDealer(rivianData.results ?? [], "rivian", { isRivian: true });
-    const polestarDealer = buildBrandDealer(polestarData.results ?? [], "polestar", { isPolestar: true });
+    const teslaDealer = buildBrandDealer(closestByDistance(teslaData.results ?? [], "tesla"), { isTesla: true });
+    const rivianDealer = buildBrandDealer(closestByDistance(rivianData.results ?? [], "rivian"), { isRivian: true });
+    const polestarDealer = buildBrandDealer(closestByDistance(polestarData.results ?? [], "polestar"), { isPolestar: true });
 
     const brandNames = new Set(["tesla", "rivian", "polestar"]);
     const generalDealers = (evData.results ?? [])
