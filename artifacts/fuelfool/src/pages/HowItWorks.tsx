@@ -9,7 +9,7 @@ const howToSchema = {
   "@type": "HowTo",
   name: "How to Calculate Gas Cost for a Road Trip Using FuelTru",
   description:
-    "FuelTru calculates the exact fuel cost for any road trip in three steps: enter your ZIP code for live local gas prices, select your vehicle for EPA-rated MPG, and enter your route for real driving distance.",
+    "FuelTru calculates the exact fuel cost for any road trip in three steps: enter your ZIP code for live local gas prices, select your vehicle for EPA-rated MPG, and enter your route for real driving distance. Results include gas cost, EV cost comparison, carbon footprint, estimated trade-in value, and local EV dealerships.",
   totalTime: "PT2M",
   estimatedCost: {
     "@type": "MonetaryAmount",
@@ -43,8 +43,8 @@ const howToSchema = {
     },
     {
       "@type": "HowToStep",
-      name: "See your total gas cost",
-      text: "FuelTru calculates: Gas Cost = (Miles ÷ MPG) × Price per Gallon. You'll see your total fuel cost, the number of gallons needed, and a comparison with what the same trip would cost in an electric vehicle. If you enabled round-trip, the distance and cost are doubled automatically.",
+      name: "See your full results",
+      text: "FuelTru calculates: Gas Cost = (Miles ÷ MPG) × Price per Gallon. Results include your total fuel cost, gallons used, an EV cost comparison with per-trip and annual savings, a carbon footprint comparison in kg CO₂, an estimated trade-in value for your current vehicle toward an EV down payment, and nearby EV dealerships sorted by distance.",
       position: 4,
     },
   ],
@@ -54,8 +54,9 @@ const webAppSchema = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   name: "FuelTru",
+  url: "https://www.fueltru.com/",
   description:
-    "Free gas trip cost calculator. Enter your ZIP for live gas prices, pick your vehicle for EPA MPG, enter your route for driving distance, and see the exact fuel cost of your road trip.",
+    "Free gas trip cost calculator. Enter your ZIP for live gas prices, pick your vehicle for EPA MPG, enter your route for driving distance, and uncover the true cost of your daily drive.",
   applicationCategory: "UtilitiesApplication",
   operatingSystem: "Any web browser",
   offers: {
@@ -68,8 +69,10 @@ const webAppSchema = {
     "EPA-rated MPG for any vehicle year/make/model/trim",
     "Real driving distance via Google Maps",
     "Round-trip fuel cost calculation",
-    "Electric vehicle cost comparison",
-    "Local EV dealership lookup",
+    "Electric vehicle cost comparison with per-mile and annual savings",
+    "Carbon footprint comparison between gas and EV (kg CO₂ and trees equivalent)",
+    "Estimated vehicle trade-in value toward an EV down payment",
+    "Local EV dealership lookup (Tesla, Rivian, Polestar, and more)",
   ],
 };
 
@@ -95,6 +98,13 @@ const steps = [
     body: "Type your start and destination. FuelTru uses Google Maps to calculate the actual driving distance along real roads — not a straight-line estimate. Toggle round-trip on or off depending on whether you're calculating a one-way or return journey.",
     source: "Source: Google Maps Distance Matrix API",
   },
+  {
+    number: "04",
+    title: "See your full results",
+    subtitle: "Gas cost, EV comparison, trade-in estimate, and more",
+    body: "FuelTru shows your total trip fuel cost, an EV comparison (per-trip savings and annual projection at your state's electricity rate), a carbon footprint breakdown in kg CO₂ with a tree-equivalent, an estimated trade-in value for your current vehicle toward an EV down payment, and nearby EV dealerships sorted by driving distance.",
+    source: "Sources: EIA electricity rates, EPA emissions data, Google Places API",
+  },
 ];
 
 export default function HowItWorks() {
@@ -104,7 +114,7 @@ export default function HowItWorks() {
     if (desc)
       desc.setAttribute(
         "content",
-        "FuelTru calculates gas costs in three steps: live EIA gas prices by ZIP, EPA-rated MPG by vehicle, and real driving distance from Google Maps. Formula: (Miles ÷ MPG) × Price/Gallon.",
+        "FuelTru calculates gas costs in three steps: live EIA gas prices by ZIP, EPA-rated MPG by vehicle, and real driving distance from Google Maps. Results include trip cost, EV comparison, carbon footprint, trade-in estimate, and local EV dealers.",
       );
     return () => {
       document.title = "FuelTru — Uncover the True Cost of Your Daily Drive";
@@ -134,7 +144,7 @@ export default function HowItWorks() {
           How FuelTru Works
         </h2>
         <p className="text-muted-foreground mb-4 text-sm">
-          Three data sources. One accurate answer.
+          Three data sources. One accurate answer. Four insights you didn't know you needed.
         </p>
 
         <div className="rounded-xl border border-card-border bg-card/60 backdrop-blur-sm px-6 py-5 mb-12">
@@ -142,7 +152,8 @@ export default function HowItWorks() {
             <span className="text-primary font-semibold">The formula:</span>{" "}
             Gas Cost = (Miles ÷ MPG) × Price per Gallon. FuelTru automates every
             variable using official government and mapping data — so you get an
-            accurate number, not a rough guess.
+            accurate number, not a rough guess. Then it goes further: EV cost
+            comparison, carbon footprint, estimated trade-in value, and nearby EV dealers.
           </p>
         </div>
 
@@ -173,6 +184,8 @@ export default function HowItWorks() {
             <li>· Gas prices vary by up to $1.50/gallon across U.S. states — a national average is often misleading.</li>
             <li>· Straight-line distance can underestimate driving distance by 20–30% in mountainous or winding terrain.</li>
             <li>· Round trips are obvious to forget — FuelTru defaults to round-trip to prevent surprises.</li>
+            <li>· EV fuel cost is roughly 50% less per mile — but most drivers never run the numbers until they see them side by side.</li>
+            <li>· Your car's trade-in value is real money toward an EV down payment — and most people underestimate it.</li>
           </ul>
         </div>
 

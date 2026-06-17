@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://YOUR_PRODUCTION_DOMAIN/</loc>
+    <loc>https://www.fueltru.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://YOUR_PRODUCTION_DOMAIN/how-it-works</loc>
+    <loc>https://www.fueltru.com/how-it-works</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://YOUR_PRODUCTION_DOMAIN/faq</loc>
+    <loc>https://www.fueltru.com/faq</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://YOUR_PRODUCTION_DOMAIN/contact</loc>
+    <loc>https://www.fueltru.com/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

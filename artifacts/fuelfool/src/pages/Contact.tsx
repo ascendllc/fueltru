@@ -8,7 +8,7 @@ const contactSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "FuelTru",
-  url: "https://fuelfool.replit.app/",
+  url: "https://www.fueltru.com/",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Tacoma",
@@ -21,7 +21,7 @@ const contactSchema = {
 function ProtectedEmail() {
   const [visible, setVisible] = useState(false);
 
-  const parts = ["info", "@", "fuelfool", ".", "com"];
+  const parts = ["info", "@", "fueltru", ".", "com"];
   const email = parts.join("");
 
   return visible ? (

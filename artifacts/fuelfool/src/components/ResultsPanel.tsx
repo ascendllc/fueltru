@@ -53,21 +53,21 @@ function SharePanel({ cost, distance, evTripCost }: {
   distance: number;
   evTripCost: number;
 }) {
-  const url = "https://fuelfool.com";
-  const text = `My ${distance}-mi trip costs $${cost.toFixed(2)} in gas. If I had an EV it would cost $${evTripCost.toFixed(2)}. Don't be fooled — calculate yours at ${url}`;
+  const url = "https://www.fueltru.com";
+  const text = `My ${distance}-mi trip costs $${cost.toFixed(2)} in gas. If I had an EV it would cost $${evTripCost.toFixed(2)}. Uncover your true driving cost at ${url}`;
   const shortText = text;
 
   const canNativeShare = typeof navigator !== "undefined" && !!navigator.share;
 
   const handleNativeShare = async () => {
     try {
-      await navigator.share({ title: "FuelTru — My Trip Cost", text: shortText });
+      await navigator.share({ title: "FuelTru — My True Trip Cost", text: shortText });
     } catch {}
   };
 
   const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
   const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(shortText)}`;
-  const emailUrl = `mailto:?subject=${encodeURIComponent("Check out my gas cost on FuelTru!")}&body=${encodeURIComponent(`${text}\n\n${url}`)}`;
+  const emailUrl = `mailto:?subject=${encodeURIComponent("You need to see what your daily drive actually costs")}&body=${encodeURIComponent(`${text}\n\n${url}`)}`;
   const smsUrl = `sms:?body=${encodeURIComponent(shortText)}`;
 
   return (
@@ -81,10 +81,10 @@ function SharePanel({ cost, distance, evTripCost }: {
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/15">
           <Share2 className="h-5 w-5 text-primary" />
         </div>
-        <h3 className="text-2xl font-display font-bold text-foreground">Spread the Fuel Foolery</h3>
+        <h3 className="text-2xl font-display font-bold text-foreground">Spread the Word</h3>
       </div>
       <p className="text-muted-foreground text-sm mb-6 max-w-md mx-auto">
-        Know someone who has no idea what their daily commute actually costs them? Send them a reality check.
+        Know someone who has no idea what their daily commute actually costs them? Send them a reality check — and let FuelTru do the math.
       </p>
 
       <div className="flex flex-wrap items-center justify-center gap-3">

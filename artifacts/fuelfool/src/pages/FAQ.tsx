@@ -7,7 +7,7 @@ import mapBg from "@assets/IMG_0122_1781468294605.jpeg";
 const faqs = [
   {
     q: "What is FuelTru?",
-    a: "FuelTru is a free gas trip cost calculator that tells you exactly how much you'll spend on fuel for any road trip. Enter your ZIP code to fetch live local gas prices, select your vehicle to pull its EPA-rated MPG, and enter your start and destination addresses. FuelTru calculates the total fuel cost — including round trips — in seconds.",
+    a: "FuelTru is a free gas trip cost calculator that tells you exactly how much you'll spend on fuel for any road trip — and what it would cost in an electric vehicle. Enter your ZIP code to fetch live local gas prices, select your vehicle to pull its EPA-rated MPG, and enter your start and destination addresses. FuelTru calculates the total fuel cost, an EV cost comparison, a carbon footprint breakdown, an estimated trade-in value for your current car, and nearby EV dealerships — all in seconds.",
   },
   {
     q: "How does FuelTru calculate gas cost?",
@@ -15,7 +15,7 @@ const faqs = [
   },
   {
     q: "What data sources does FuelTru use?",
-    a: "FuelTru pulls from three official sources: (1) U.S. Energy Information Administration (EIA) for weekly regional gas prices, (2) FuelEconomy.gov (U.S. Department of Energy) for EPA-rated fuel economy by year, make, model, and trim, and (3) Google Maps Distance Matrix API for real driving distance and route data.",
+    a: "FuelTru pulls from three official sources: (1) U.S. Energy Information Administration (EIA) for weekly regional gas prices and state electricity rates, (2) FuelEconomy.gov (U.S. Department of Energy) for EPA-rated fuel economy and vehicle class by year, make, model, and trim, and (3) Google Maps Distance Matrix API and Google Places API for real driving distance and EV dealership locations.",
   },
   {
     q: "How much does a typical road trip cost in gas?",
@@ -40,6 +40,22 @@ const faqs = [
   {
     q: "How much does an EV cost to drive compared to a gas car?",
     a: "Electric vehicles cost significantly less per mile to fuel than gasoline vehicles. At the national average electricity rate of $0.16/kWh and an EV efficiency of 3 miles/kWh (roughly 100 MPGe), electricity costs about $0.054 per mile — roughly 3–4× cheaper than gas at $3.30/gallon in a 28 MPG car ($0.118/mile). A 500-mile road trip costs about $27 in electricity vs. $59 in gasoline.",
+  },
+  {
+    q: "What does FuelTru's EV cost comparison show?",
+    a: "After calculating your gas cost, FuelTru shows what the same trip would cost in an electric vehicle using your state's average electricity rate (sourced from the EIA) and a 100 MPGe EV average. It shows the per-trip savings, an annual fuel savings projection at 15,000 miles/year, and a carbon footprint comparison — including CO₂ emitted per trip and the annual difference expressed in 'trees planted equivalent.'",
+  },
+  {
+    q: "Does FuelTru show carbon footprint data?",
+    a: "Yes. FuelTru calculates the CO₂ emissions of your gas vehicle vs. an equivalent EV for your trip, using EPA figures (8.887 kg CO₂ per gallon of gasoline burned) and the U.S. average grid emissions factor (0.386 kg CO₂ per kWh). It also shows annual emissions at 15,000 miles and expresses the difference as an equivalent number of trees planted per year.",
+  },
+  {
+    q: "Does FuelTru estimate my car's trade-in value?",
+    a: "Yes. In the 'Ready to Go Electric' section, FuelTru shows an estimated trade-in value range for your current vehicle based on its year, make, model, and EPA vehicle class. It assumes average condition and approximately 12,500 miles per year of driving, then applies standard automotive depreciation rates to an average new-car price for your vehicle's segment and model year. The result is a low/high range — use it as a starting point before getting real quotes from CarMax, Carvana, or a local EV dealer.",
+  },
+  {
+    q: "How does FuelTru find nearby EV dealerships?",
+    a: "FuelTru geocodes your ZIP code to get precise coordinates, then queries the Google Places API for the nearest Tesla, Rivian, Polestar, and general EV dealerships within approximately 155 miles. Results are sorted by actual driving distance, and each one links directly to Google Maps. Up to 6 dealerships are shown.",
   },
   {
     q: "How do gas prices vary by state?",
@@ -83,7 +99,7 @@ export default function FAQ() {
     if (desc)
       desc.setAttribute(
         "content",
-        "Frequently asked questions about FuelTru — how gas cost is calculated, what data sources are used, MPG averages, EV comparisons, and road trip fuel cost tips.",
+        "Frequently asked questions about FuelTru — how gas cost is calculated, what data sources are used, MPG averages, EV comparisons, carbon footprint, trade-in estimates, and road trip fuel cost tips.",
       );
     return () => {
       document.title = "FuelTru — Uncover the True Cost of Your Daily Drive";
@@ -112,7 +128,7 @@ export default function FAQ() {
           Frequently Asked Questions
         </h2>
         <p className="text-muted-foreground mb-12 text-sm">
-          Everything you need to know about calculating gas costs for road trips.
+          Everything you need to know about FuelTru — from calculating gas costs to EV comparisons and trade-in estimates.
         </p>
 
         <div className="space-y-8">

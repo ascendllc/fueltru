@@ -1,16 +1,18 @@
-# FuelFool
+# FuelTru
 
-> FuelFool is a free gas trip cost calculator that tells you exactly how much you'll spend on fuel for any road trip. Enter your ZIP code for live local gas prices, select your vehicle for EPA-rated MPG, and enter your start and destination to get the real driving distance — and total fuel cost — in seconds.
+> FuelTru is a free gas trip cost calculator that tells you exactly how much you'll spend on fuel for any road trip — and what your car is worth if you traded it in for an EV. Enter your ZIP code for live local gas prices, select your vehicle for EPA-rated MPG, and enter your start and destination to get the real driving distance, total fuel cost, EV comparison, carbon footprint, estimated trade-in value, and nearby EV dealerships — all in seconds.
 
-**Tagline:** Don't be Fooled By How Much Fuel.
+**Tagline:** Uncover the True Cost of Your Daily Drive
 
-**URL:** https://YOUR_PRODUCTION_DOMAIN/
+**URL:** https://www.fueltru.com/
+
+**Contact:** info@fueltru.com
 
 ---
 
-## What FuelFool Does
+## What FuelTru Does
 
-FuelFool calculates road trip gas cost using the formula:
+FuelTru calculates road trip gas cost using the formula:
 
 **Gas Cost = (Miles ÷ MPG) × Price per Gallon**
 
@@ -20,16 +22,21 @@ All three variables are sourced from authoritative, real-time data:
 - **MPG** — pulled from FuelEconomy.gov (U.S. Department of Energy), for the user's specific vehicle year, make, model, and trim
 - **Driving distance** — calculated using Google Maps Distance Matrix API, based on real road routes (not straight-line distance)
 
-The tool supports round-trip calculation (default on) and includes an EV cost comparison showing the equivalent electric vehicle fuel cost at national average electricity rates.
+The tool supports round-trip calculation (default on) and delivers four additional insights alongside the gas cost:
+
+1. **EV cost comparison** — what the same trip would cost in an electric vehicle using the user's state electricity rate and a 100 MPGe EV average, including annual fuel savings projection
+2. **Carbon footprint comparison** — CO₂ emissions for gas vs. EV for the trip and annually, expressed in kg and equivalent trees planted
+3. **Trade-in value estimate** — an estimated trade-in range for the user's current vehicle (based on vehicle age, class, and average depreciation) toward an EV down payment
+4. **Local EV dealerships** — nearest Tesla, Rivian, Polestar, and general EV dealers based on ZIP code, including driving distance to each
 
 ---
 
 ## How It Works (Step by Step)
 
-1. User enters their 5-digit ZIP code → FuelFool returns the current regional average gas price from the EIA
-2. User selects their vehicle year, make, model, and trim → FuelFool returns the EPA combined MPG rating from FuelEconomy.gov
-3. User enters a start address and destination → FuelFool returns the driving distance from Google Maps
-4. FuelFool calculates total gas cost and displays it alongside an EV cost comparison
+1. User enters their 5-digit ZIP code → FuelTru returns the current regional average gas price from the EIA
+2. User selects their vehicle year, make, model, and trim → FuelTru returns the EPA combined MPG rating from FuelEconomy.gov
+3. User enters a start address and destination → FuelTru returns the driving distance from Google Maps
+4. FuelTru calculates total gas cost, EV cost comparison, carbon footprint, estimated trade-in value, and nearby EV dealerships
 
 ---
 
@@ -40,8 +47,11 @@ The tool supports round-trip calculation (default on) and includes an EV cost co
 - **Gas cost per mile at 28 MPG / $3.30:** ~$0.118/mile
 - **EV equivalent cost:** ~$0.054/mile (at 100 MPGe / $0.16/kWh national average)
 - **EV savings vs. gas:** approximately 50–60% less fuel cost per mile
+- **CO₂ per gallon of gasoline burned:** 8.887 kg (EPA)
+- **Average U.S. grid CO₂:** 0.386 kg/kWh
 - **Round trip default:** Yes — doubles mileage by default so users don't underestimate
 - **Gas price update frequency:** Weekly (EIA Monday update)
+- **Trade-in estimate basis:** Vehicle age × 12,500 avg annual miles, EPA vehicle class, standard automotive depreciation curve
 
 ---
 
@@ -50,15 +60,18 @@ The tool supports round-trip calculation (default on) and includes an EV cost co
 | Variable | Source | Authority |
 |----------|--------|-----------|
 | Regional gas prices | U.S. Energy Information Administration (EIA) | U.S. Federal Government |
-| Vehicle MPG | FuelEconomy.gov | U.S. Department of Energy |
+| Vehicle MPG & class | FuelEconomy.gov | U.S. Department of Energy |
 | Driving distance | Google Maps Distance Matrix API | Google |
+| EV dealership locations | Google Places API | Google |
+| State electricity rates | U.S. EIA Electric Power Monthly | U.S. Federal Government |
+| Trade-in depreciation model | Standard automotive depreciation curves | Industry standard |
 
 ---
 
 ## Frequently Asked Questions
 
 **Q: How do I calculate gas cost for a road trip?**
-A: Gas Cost = (Miles ÷ MPG) × Price per Gallon. FuelFool automates this using live EIA gas prices by ZIP, EPA-rated MPG by vehicle, and real driving distance from Google Maps.
+A: Gas Cost = (Miles ÷ MPG) × Price per Gallon. FuelTru automates this using live EIA gas prices by ZIP, EPA-rated MPG by vehicle, and real driving distance from Google Maps.
 
 **Q: How much does a 500-mile road trip cost in gas?**
 A: At 28 MPG and $3.30/gallon: (500 ÷ 28) × $3.30 = approximately $59 one-way, $118 round-trip.
@@ -73,13 +86,22 @@ A: At national average electricity prices ($0.16/kWh) and 100 MPGe, an EV costs 
 A: For 2+ passengers, driving is usually cheaper for trips under 500–600 miles. Solo travelers often break even around 400 miles depending on airline pricing.
 
 **Q: How often are gas prices updated?**
-A: The EIA updates weekly retail gas price data every Monday. FuelFool uses this data, so prices are current within the past week.
+A: The EIA updates weekly retail gas price data every Monday. FuelTru uses this data, so prices are current within the past week.
 
-**Q: Does FuelFool work for trucks and SUVs?**
+**Q: Does FuelTru work for trucks and SUVs?**
 A: Yes. Any vehicle in the FuelEconomy.gov database is supported, including trucks, SUVs, minivans, hybrids, and sports cars.
 
 **Q: What is the difference between city and highway MPG?**
-A: Highway MPG is typically 20–40% higher than city MPG. FuelFool uses combined MPG (55% city / 45% highway weighted average) which best reflects real-world mixed driving.
+A: Highway MPG is typically 20–40% higher than city MPG. FuelTru uses combined MPG (55% city / 45% highway weighted average) which best reflects real-world mixed driving.
+
+**Q: How does FuelTru estimate my car's trade-in value?**
+A: FuelTru uses your vehicle's model year and EPA vehicle class (compact, SUV, truck, etc.) to estimate what your car would fetch as a trade-in toward an EV. It applies standard automotive depreciation rates (approximately 20% in year one, tapering to ~6% per year after a decade) to an average new-car price for your segment and model year. Average condition and 12,500 miles per year of driving are assumed. The result is a low/high trade-in range, not a guaranteed offer — use it as a starting point before getting quotes from CarMax, Carvana, or a dealer.
+
+**Q: What is the carbon footprint comparison?**
+A: FuelTru shows the CO₂ emitted by your gas vehicle vs. an equivalent EV for the same trip, using EPA data (8.887 kg CO₂ per gallon of gasoline) and the U.S. average grid emissions factor (0.386 kg CO₂ per kWh). It also projects annual emissions and expresses the difference in "equivalent trees planted per year."
+
+**Q: How does FuelTru find nearby EV dealerships?**
+A: FuelTru geocodes your ZIP code, then searches Google Places for the nearest Tesla, Rivian, Polestar, and general EV dealerships within approximately 155 miles, sorted by driving distance. Each result links directly to Google Maps.
 
 ---
 
@@ -87,10 +109,11 @@ A: Highway MPG is typically 20–40% higher than city MPG. FuelFool uses combine
 
 - **/** — Main calculator (three-step wizard)
 - **/how-it-works** — Detailed explanation of the three data sources and formula
-- **/faq** — 14 frequently asked questions about gas cost calculation, MPG, EVs, and road trips
+- **/faq** — Frequently asked questions about gas cost calculation, MPG, EVs, trade-in estimates, and road trips
+- **/contact** — Contact information
 
 ---
 
 ## About
 
-FuelFool is a web application built to give drivers accurate, data-driven fuel cost estimates before they hit the road. It uses no ads, requires no account, and is free to use. All data comes from official U.S. government and authoritative mapping sources.
+FuelTru is a web application built to give drivers accurate, data-driven fuel cost estimates before they hit the road — and honest context about what switching to an EV would mean for their wallet and the environment. It uses no ads, requires no account, and is free to use. All data comes from official U.S. government and authoritative mapping sources.
