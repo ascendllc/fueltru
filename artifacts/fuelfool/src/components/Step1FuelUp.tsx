@@ -87,6 +87,7 @@ export function Step1FuelUp({ isActive, isComplete, onComplete }: Step1Props) {
               type="submit"
               disabled={isLoading}
               className="hover-elevate hover:brightness-110 active:scale-95 transition-all"
+              style={{ backgroundColor: '#6D9DC5', borderColor: '#6D9DC5' }}
               data-testid="button-submit-step1"
             >
               {isLoading ? "Checking..." : "Find Gas Price"}

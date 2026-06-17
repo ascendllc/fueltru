@@ -89,11 +89,11 @@
 
   --border: 207 25% 87%;
   --input: 207 20% 94%;
-  --ring: 140 71% 44%;
+  --ring: 207 43% 60%;
 
   --radius: 0.75rem;
 
-  --shadow-active: inset 0 0 15px rgba(32, 191, 85, 0.12);
+  --shadow-active: inset 0 0 15px rgba(109, 157, 197, 0.18);
 }
 
 @layer base {
