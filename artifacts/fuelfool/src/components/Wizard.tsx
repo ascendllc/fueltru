@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Step1FuelUp } from "./Step1FuelUp";
-import { Step2YourRide } from "./Step2YourRide";
+import { Step2YourRide, type VehicleInfo } from "./Step2YourRide";
 import { Step3YourTrip } from "./Step3YourTrip";
 import { ResultsPanel } from "./ResultsPanel";
 import { FuelGaugeLogo } from "./FuelGaugeLogo";
@@ -12,6 +12,7 @@ export function Wizard() {
   const [gasPrice, setGasPrice] = useState<number | null>(null);
   const [zip, setZip] = useState<string | null>(null);
   const [mpg, setMpg] = useState<number | null>(null);
+  const [vehicle, setVehicle] = useState<VehicleInfo | null>(null);
   const [distanceData, setDistanceData] = useState<{ distance: number; duration: string } | null>(null);
 
   const reset = () => {
@@ -20,6 +21,7 @@ export function Wizard() {
     setGasPrice(null);
     setZip(null);
     setMpg(null);
+    setVehicle(null);
     setDistanceData(null);
   };
 
@@ -79,7 +81,7 @@ export function Wizard() {
         <Step2YourRide 
           isActive={currentStep === 2} 
           isComplete={currentStep > 2}
-          onComplete={(val) => { setMpg(val); setCurrentStep(3); }}
+          onComplete={(info) => { setMpg(info.mpg); setVehicle(info); setCurrentStep(3); }}
         />
 
         <Step3YourTrip 
@@ -96,6 +98,7 @@ export function Wizard() {
           distance={distanceData.distance}
           duration={distanceData.duration}
           zip={zip}
+          vehicle={vehicle ?? undefined}
           onReset={reset}
         />
       )}

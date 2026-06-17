@@ -17,10 +17,18 @@ import {
   getGetVehicleMpgQueryKey
 } from "@workspace/api-client-react";
 
+export interface VehicleInfo {
+  mpg: number;
+  year: string;
+  make: string;
+  model: string;
+  vehicleId: string;
+}
+
 interface Step2Props {
   isActive: boolean;
   isComplete: boolean;
-  onComplete: (mpg: number) => void;
+  onComplete: (info: VehicleInfo) => void;
 }
 
 export function Step2YourRide({ isActive, isComplete, onComplete }: Step2Props) {
@@ -59,10 +67,16 @@ export function Step2YourRide({ isActive, isComplete, onComplete }: Step2Props) 
   };
 
   useEffect(() => {
-    if (mpgData && isActive && !isComplete) {
-      onComplete(mpgData.combined);
+    if (mpgData && submittedTrimId && isActive && !isComplete) {
+      onComplete({
+        mpg: mpgData.combined,
+        year,
+        make,
+        model,
+        vehicleId: submittedTrimId,
+      });
     }
-  }, [mpgData, isActive, isComplete]);
+  }, [mpgData, submittedTrimId, isActive, isComplete]);
 
   if (!isActive && !isComplete) return null;
 

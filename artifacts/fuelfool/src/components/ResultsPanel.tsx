@@ -3,7 +3,23 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useCostCounter } from "@/hooks/use-cost-counter";
 import { useGetEvDealerships, getGetEvDealershipsQueryKey } from "@workspace/api-client-react";
-import { Zap, MapPin, ExternalLink, Car, Share2, Mail, MessageSquare, Leaf } from "lucide-react";
+import { Zap, MapPin, ExternalLink, Car, Share2, Mail, MessageSquare, Leaf, Tag } from "lucide-react";
+
+interface VehicleInfo {
+  year: string;
+  make: string;
+  model: string;
+  vehicleId: string;
+}
+
+interface TradeInData {
+  estimatedLow: number;
+  estimatedHigh: number;
+  estimatedAvg: number;
+  estimatedMileage: number;
+  vehicleAge: number;
+  segment: string;
+}
 
 interface ResultsPanelProps {
   gasPrice: number;
@@ -11,6 +27,7 @@ interface ResultsPanelProps {
   distance: number;
   duration: string;
   zip: string;
+  vehicle?: VehicleInfo;
   onReset: () => void;
 }
 
@@ -130,8 +147,9 @@ function SharePanel({ cost, distance, evTripCost }: {
   );
 }
 
-export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, onReset }: ResultsPanelProps) {
+export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, vehicle, onReset }: ResultsPanelProps) {
   const [electricityRate, setElectricityRate] = useState(NATIONAL_FALLBACK_RATE);
+  const [tradeIn, setTradeIn] = useState<TradeInData | null>(null);
 
   useEffect(() => {
     const apiBase = import.meta.env.VITE_API_BASE_URL ?? "";
@@ -144,6 +162,23 @@ export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, onReset }
       })
       .catch(() => {});
   }, [zip]);
+
+  useEffect(() => {
+    if (!vehicle) return;
+    const apiBase = import.meta.env.VITE_API_BASE_URL ?? "";
+    const params = new URLSearchParams({
+      vehicleId: vehicle.vehicleId,
+      year: vehicle.year,
+      make: vehicle.make,
+      model: vehicle.model,
+    });
+    fetch(`${apiBase}/api/trade-in-value?${params}`)
+      .then((r) => r.json())
+      .then((data: TradeInData) => {
+        if (typeof data.estimatedAvg === "number") setTradeIn(data);
+      })
+      .catch(() => {});
+  }, [vehicle?.vehicleId]);
 
   const evCostPerMile = (KWH_PER_GALLON_EQUIV / EV_MPGE) * electricityRate;
 
@@ -345,6 +380,52 @@ export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, onReset }
           </div>
           <h3 className="text-2xl font-display font-bold text-foreground">Ready to Go Electric?</h3>
         </div>
+
+        {/* Trade-in value estimate */}
+        {vehicle && (
+          <div className="mb-6 rounded-lg border border-ring/40 bg-background p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <Tag className="h-4 w-4 text-ring" />
+              <span className="text-sm font-semibold text-ring uppercase tracking-wide">Your Trade-In Estimate</span>
+            </div>
+            {tradeIn ? (
+              <>
+                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                  A <strong className="text-foreground">{vehicle.year} {vehicle.make} {vehicle.model}</strong> in
+                  average condition with roughly{" "}
+                  <strong className="text-foreground">{tradeIn.estimatedMileage.toLocaleString()} miles</strong>{" "}
+                  (about {tradeIn.vehicleAge} year{tradeIn.vehicleAge !== 1 ? "s" : ""} of average driving) is
+                  typically worth:
+                </p>
+                <div className="flex flex-col sm:flex-row items-center gap-4 mb-4">
+                  <div className="flex-1 w-full text-center p-4 rounded-lg bg-ring/8 border border-ring/30">
+                    <div className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Trade-In Range</div>
+                    <div className="text-2xl font-bold text-foreground">
+                      ${tradeIn.estimatedLow.toLocaleString()} – ${tradeIn.estimatedHigh.toLocaleString()}
+                    </div>
+                  </div>
+                  <div className="flex-1 w-full text-center p-4 rounded-lg bg-success/8 border border-success/30">
+                    <div className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Toward Your EV Down Payment</div>
+                    <div className="text-2xl font-bold text-success">
+                      ~${tradeIn.estimatedAvg.toLocaleString()}
+                    </div>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Based on standard depreciation for a {tradeIn.segment.toLowerCase()} in your model year.
+                  Trade-in offers from dealers typically run 10–20% below private-party sale price. Get
+                  competing offers from{" "}
+                  <a href="https://www.carmax.com/sell-my-car" target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground transition-colors">CarMax</a>
+                  {" "}or{" "}
+                  <a href="https://www.carvana.com/sell-my-car" target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground transition-colors">Carvana</a>
+                  {" "}before heading to a dealer.
+                </p>
+              </>
+            ) : (
+              <p className="text-sm text-muted-foreground animate-pulse">Estimating trade-in value…</p>
+            )}
+          </div>
+        )}
 
         {dealerships.length > 0 && (
           <>

@@ -6,6 +6,7 @@ import distanceRouter from "./distance";
 import evDealershipsRouter from "./evDealerships";
 import autocompleteRouter from "./autocomplete";
 import electricityRateRouter from "./electricityRate";
+import tradeInValueRouter from "./tradeInValue";
 
 const router: IRouter = Router();
 
@@ -16,5 +17,6 @@ router.use(distanceRouter);
 router.use(evDealershipsRouter);
 router.use(autocompleteRouter);
 router.use(electricityRateRouter);
+router.use(tradeInValueRouter);
 
 export default router;
