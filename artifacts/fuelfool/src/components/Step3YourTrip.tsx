@@ -169,7 +169,7 @@ export function Step3YourTrip({ isActive, isComplete, onComplete }: Step3Props) 
             onClick={handleSubmit}
             disabled={!origin || !destination || isLoading}
             className="hover-elevate hover:brightness-110 active:scale-95 transition-all"
-            style={{ backgroundColor: '#6D9DC5', borderColor: '#6D9DC5' }}
+            style={{ backgroundColor: '#3066BE', borderColor: '#3066BE' }}
             data-testid="button-submit-step3"
           >
             {isLoading ? "Calculating..." : "Calculate My Trip"}

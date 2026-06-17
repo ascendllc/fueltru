@@ -152,7 +152,7 @@ export function Step2YourRide({ isActive, isComplete, onComplete }: Step2Props) 
             onClick={handleSubmit}
             disabled={!trim || loadingMpg}
             className="mt-4 hover-elevate hover:brightness-110 active:scale-95 transition-all"
-            style={{ backgroundColor: '#6D9DC5', borderColor: '#6D9DC5' }}
+            style={{ backgroundColor: '#3066BE', borderColor: '#3066BE' }}
             data-testid="button-submit-step2"
           >
             {loadingMpg ? "Looking up..." : "Look Up MPG"}
