@@ -15,7 +15,7 @@ interface Step3Props {
 
 type Suggestion = { description: string; placeId: string };
 
-const API_BASE = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, "") ?? "";
+const API_BASE = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, "") ?? "https://workspaceapi-server-production-0761.up.railway.app";
 
 async function fetchSuggestions(q: string): Promise<Suggestion[]> {
   if (!q || q.trim().length < 2) return [];

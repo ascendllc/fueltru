@@ -152,7 +152,7 @@ export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, vehicle, 
   const [tradeIn, setTradeIn] = useState<TradeInData | null>(null);
 
   useEffect(() => {
-    const apiBase = import.meta.env.VITE_API_BASE_URL ?? "";
+    const apiBase = import.meta.env.VITE_API_BASE_URL ?? "https://workspaceapi-server-production-0761.up.railway.app";
     fetch(`${apiBase}/api/electricity-rate?zip=${zip}`)
       .then((r) => r.json())
       .then((data: { rate?: number }) => {
@@ -165,7 +165,7 @@ export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, vehicle, 
 
   useEffect(() => {
     if (!vehicle) return;
-    const apiBase = import.meta.env.VITE_API_BASE_URL ?? "";
+    const apiBase = import.meta.env.VITE_API_BASE_URL ?? "https://workspaceapi-server-production-0761.up.railway.app";
     const params = new URLSearchParams({
       vehicleId: vehicle.vehicleId,
       year: vehicle.year,
