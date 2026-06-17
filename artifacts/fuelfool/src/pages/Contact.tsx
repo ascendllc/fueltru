@@ -52,7 +52,7 @@ export default function Contact() {
         "Contact FuelTru. Located in Tacoma, Washington, USA.",
       );
     return () => {
-      document.title = "FuelTru — Don't be Fooled By How Much Fuel";
+      document.title = "FuelTru — Uncover the True Cost of Your Daily Drive";
     };
   }, []);
 

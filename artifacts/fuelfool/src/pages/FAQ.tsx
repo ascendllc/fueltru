@@ -86,7 +86,7 @@ export default function FAQ() {
         "Frequently asked questions about FuelTru — how gas cost is calculated, what data sources are used, MPG averages, EV comparisons, and road trip fuel cost tips.",
       );
     return () => {
-      document.title = "FuelTru — Don't be Fooled By How Much Fuel";
+      document.title = "FuelTru — Uncover the True Cost of Your Daily Drive";
     };
   }, []);
 

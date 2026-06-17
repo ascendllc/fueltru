@@ -107,7 +107,7 @@ export default function HowItWorks() {
         "FuelTru calculates gas costs in three steps: live EIA gas prices by ZIP, EPA-rated MPG by vehicle, and real driving distance from Google Maps. Formula: (Miles ÷ MPG) × Price/Gallon.",
       );
     return () => {
-      document.title = "FuelTru — Don't be Fooled By How Much Fuel";
+      document.title = "FuelTru — Uncover the True Cost of Your Daily Drive";
     };
   }, []);
 

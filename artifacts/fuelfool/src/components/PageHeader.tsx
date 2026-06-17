@@ -38,7 +38,7 @@ export function PageHeader({ backHref = "/", backLabel = "Back to FuelTru" }: Pa
           </h1>
         </motion.div>
         <p className="text-xl md:text-2xl text-foreground font-display mb-4">
-          Don't be Fooled By How Much Fuel
+          Uncover the True Cost of Your Daily Drive
         </p>
         <p className="text-md text-muted-foreground italic">
           "{quote}"
