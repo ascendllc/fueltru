@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useCostCounter } from "@/hooks/use-cost-counter";
 import { useGetEvDealerships, getGetEvDealershipsQueryKey } from "@workspace/api-client-react";
-import { Zap, MapPin, ExternalLink, Car, Share2, Mail, MessageSquare } from "lucide-react";
+import { Zap, MapPin, ExternalLink, Car, Share2, Mail, MessageSquare, Leaf } from "lucide-react";
 
 interface ResultsPanelProps {
   gasPrice: number;
@@ -26,6 +26,10 @@ const COMPARISONS = [
 const EV_MPGE = 100;
 const KWH_PER_GALLON_EQUIV = 33.7;
 const NATIONAL_FALLBACK_RATE = 0.16;
+const CO2_PER_GALLON_KG = 8.887;
+const GRID_KG_PER_KWH = 0.386;
+const KG_CO2_PER_TREE_PER_YEAR = 21;
+const ANNUAL_MILES = 15000;
 
 function SharePanel({ cost, distance, evTripCost }: {
   cost: number;
@@ -150,6 +154,16 @@ export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, onReset }
   const evTripCost = distance * evCostPerMile;
   const evSavings = cost - evTripCost;
 
+  const gasCO2 = gallons * CO2_PER_GALLON_KG;
+  const evKwh = (distance / EV_MPGE) * KWH_PER_GALLON_EQUIV;
+  const evCO2 = evKwh * GRID_KG_PER_KWH;
+  const co2Saved = gasCO2 - evCO2;
+
+  const annualGasCO2 = (ANNUAL_MILES / mpg) * CO2_PER_GALLON_KG;
+  const annualEvCO2 = (ANNUAL_MILES / EV_MPGE) * KWH_PER_GALLON_EQUIV * GRID_KG_PER_KWH;
+  const annualCO2Saved = annualGasCO2 - annualEvCO2;
+  const treesEquivalent = Math.round(annualCO2Saved / KG_CO2_PER_TREE_PER_YEAR);
+
   const { data: dealerships = [] } = useGetEvDealerships(
     { zip },
     { query: { queryKey: getGetEvDealershipsQueryKey({ zip }), staleTime: 1000 * 60 * 10 } }
@@ -265,13 +279,50 @@ export function ResultsPanel({ gasPrice, mpg, distance, duration, zip, onReset }
           </div>
         </div>
 
-        <p className="text-sm text-muted-foreground italic">
+        <p className="text-sm text-muted-foreground italic mb-6">
           Over 15,000 miles/year that's roughly{" "}
           <strong className="text-foreground not-italic">
             ${Math.round((evCostPerMile - gasPrice / mpg) * -15000).toLocaleString()} in annual fuel savings
           </strong>{" "}
           compared to your current vehicle.
         </p>
+
+        {/* Carbon footprint section */}
+        <div className="border-t border-card-border pt-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Leaf className="h-4 w-4 text-success" />
+            <span className="text-sm font-semibold text-success uppercase tracking-wide">Carbon Footprint</span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+            <div className="p-4 bg-background rounded-lg border border-card-border text-center">
+              <div className="text-xs text-muted-foreground mb-1 uppercase tracking-wide">Your Car Emits</div>
+              <div className="text-2xl font-bold text-primary">{gasCO2.toFixed(1)} kg</div>
+              <div className="text-xs text-muted-foreground mt-1">CO₂ this trip</div>
+            </div>
+            <div className="p-4 bg-background rounded-lg border border-success/30 text-center">
+              <div className="text-xs text-muted-foreground mb-1 uppercase tracking-wide">EV Would Emit</div>
+              <div className="text-2xl font-bold text-success">{evCO2.toFixed(1)} kg</div>
+              <div className="text-xs text-muted-foreground mt-1">CO₂ this trip</div>
+            </div>
+            <div className="p-4 bg-success/5 rounded-lg border border-success/50 text-center">
+              <div className="text-xs text-muted-foreground mb-1 uppercase tracking-wide">CO₂ Saved</div>
+              <div className="text-2xl font-bold text-success">{co2Saved.toFixed(1)} kg</div>
+              <div className="text-xs text-muted-foreground mt-1">per trip</div>
+            </div>
+          </div>
+
+          <div className="bg-success/5 border border-success/20 rounded-lg p-4 text-sm text-muted-foreground leading-relaxed">
+            <span className="font-semibold text-foreground">Annually at {ANNUAL_MILES.toLocaleString()} miles:</span>{" "}
+            your current vehicle emits roughly{" "}
+            <strong className="text-foreground">{Math.round(annualGasCO2).toLocaleString()} kg of CO₂</strong>.
+            An EV on the same mileage would emit only{" "}
+            <strong className="text-foreground">{Math.round(annualEvCO2).toLocaleString()} kg</strong> — keeping{" "}
+            <strong className="text-success">{Math.round(annualCO2Saved).toLocaleString()} kg of CO₂</strong> out
+            of the atmosphere. That's the equivalent of planting{" "}
+            <strong className="text-success">{treesEquivalent} trees</strong> every year.
+          </div>
+        </div>
       </motion.div>
 
       {/* Share card */}
