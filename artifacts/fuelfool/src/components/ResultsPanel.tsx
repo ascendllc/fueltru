@@ -40,13 +40,13 @@ function SharePanel({ cost, distance, evTripCost }: {
 
   const handleNativeShare = async () => {
     try {
-      await navigator.share({ title: "FuelFool — My Trip Cost", text: shortText });
+      await navigator.share({ title: "FuelTru — My Trip Cost", text: shortText });
     } catch {}
   };
 
   const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
   const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(shortText)}`;
-  const emailUrl = `mailto:?subject=${encodeURIComponent("Check out my gas cost on FuelFool!")}&body=${encodeURIComponent(`${text}\n\n${url}`)}`;
+  const emailUrl = `mailto:?subject=${encodeURIComponent("Check out my gas cost on FuelTru!")}&body=${encodeURIComponent(`${text}\n\n${url}`)}`;
   const smsUrl = `sms:?body=${encodeURIComponent(shortText)}`;
 
   return (

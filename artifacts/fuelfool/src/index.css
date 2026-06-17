@@ -52,43 +52,48 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-:root, .dark {
-  --background: 225 21% 7%;
-  --foreground: 210 40% 96%;
+:root {
+  /* Porcelain background */
+  --background: 42 80% 99%;
+  --foreground: 220 30% 15%;
 
-  --card: 230 24% 15%;
-  --card-foreground: 210 40% 96%;
-  --card-border: 230 24% 20%;
+  --card: 0 0% 100%;
+  --card-foreground: 220 30% 15%;
+  --card-border: 207 30% 87%;
 
-  --popover: 230 24% 15%;
-  --popover-foreground: 210 40% 96%;
-  --popover-border: 230 24% 20%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 30% 15%;
+  --popover-border: 207 30% 87%;
 
-  --primary: 38 90% 55%;
-  --primary-foreground: 225 21% 7%;
-  
-  --secondary: 230 24% 20%;
-  --secondary-foreground: 210 40% 96%;
+  /* Jade Green #20BF55 */
+  --primary: 140 71% 38%;
+  --primary-foreground: 0 0% 100%;
 
-  --muted: 230 24% 20%;
-  --muted-foreground: 215 16% 65%;
+  /* Light Steel Blue tint for surfaces */
+  --secondary: 207 30% 94%;
+  --secondary-foreground: 217 50% 28%;
 
-  --accent: 38 90% 55%;
-  --accent-foreground: 225 21% 7%;
+  --muted: 207 20% 94%;
+  --muted-foreground: 217 15% 48%;
 
-  --success: 142 71% 58%;
-  --success-foreground: 225 21% 7%;
+  /* Smart Blue #3066BE */
+  --accent: 217 55% 47%;
+  --accent-foreground: 0 0% 100%;
 
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 210 40% 96%;
+  /* Jade Green for EV / success states */
+  --success: 140 71% 38%;
+  --success-foreground: 0 0% 100%;
 
-  --border: 230 24% 20%;
-  --input: 230 24% 25%;
-  --ring: 38 90% 55%;
+  --destructive: 0 84% 55%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 207 25% 87%;
+  --input: 207 20% 94%;
+  --ring: 140 71% 44%;
 
   --radius: 0.75rem;
 
-  --shadow-active: inset 0 0 15px rgba(245, 166, 35, 0.15);
+  --shadow-active: inset 0 0 15px rgba(32, 191, 85, 0.12);
 }
 
 @layer base {

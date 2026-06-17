@@ -7,7 +7,7 @@ import mapBg from "@assets/IMG_0122_1781468294605.jpeg";
 const contactSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "FuelFool",
+  name: "FuelTru",
   url: "https://fuelfool.replit.app/",
   address: {
     "@type": "PostalAddress",
@@ -44,15 +44,15 @@ function ProtectedEmail() {
 
 export default function Contact() {
   useEffect(() => {
-    document.title = "Contact — FuelFool";
+    document.title = "Contact — FuelTru";
     const desc = document.querySelector('meta[name="description"]');
     if (desc)
       desc.setAttribute(
         "content",
-        "Contact FuelFool. Located in Tacoma, Washington, USA.",
+        "Contact FuelTru. Located in Tacoma, Washington, USA.",
       );
     return () => {
-      document.title = "FuelFool — Don't be Fooled By How Much Fuel";
+      document.title = "FuelTru — Don't be Fooled By How Much Fuel";
     };
   }, []);
 

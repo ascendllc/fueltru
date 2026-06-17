@@ -41,7 +41,7 @@ export function Wizard() {
         >
           <FuelGaugeLogo size={80} />
           <h1 className="text-5xl md:text-6xl font-display font-bold text-primary">
-            FuelFool
+            FuelTru
           </h1>
         </motion.div>
         <p className="text-xl md:text-2xl text-foreground font-display mb-4">

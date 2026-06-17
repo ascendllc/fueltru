@@ -12,12 +12,12 @@ export function FuelGaugeLogo({ className = "", size = 56 }: FuelGaugeLogoProps)
       className={className}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      aria-label="FuelFool logo — fuel gauge"
+      aria-label="FuelTru logo — fuel gauge"
     >
       {/* Outer arc */}
       <path
         d="M 8 52 A 42 42 0 0 1 92 52"
-        stroke="#F5A623"
+        stroke="#20BF55"
         strokeWidth="5"
         strokeLinecap="round"
       />
@@ -38,7 +38,7 @@ export function FuelGaugeLogo({ className = "", size = 56 }: FuelGaugeLogoProps)
             y1={y1}
             x2={cx}
             y2={cy}
-            stroke={isMajor ? "#F5A623" : "#F5A62388"}
+            stroke={isMajor ? "#20BF55" : "#20BF5588"}
             strokeWidth={isMajor ? 2.5 : 1.8}
             strokeLinecap="round"
           />
@@ -56,7 +56,7 @@ export function FuelGaugeLogo({ className = "", size = 56 }: FuelGaugeLogoProps)
             y1="52"
             x2={nx}
             y2={ny}
-            stroke="#F5A623"
+            stroke="#20BF55"
             strokeWidth="2.2"
             strokeLinecap="round"
           />
@@ -64,16 +64,16 @@ export function FuelGaugeLogo({ className = "", size = 56 }: FuelGaugeLogoProps)
       })()}
 
       {/* Center pivot */}
-      <circle cx="50" cy="52" r="3.5" fill="#F5A623" />
+      <circle cx="50" cy="52" r="3.5" fill="#20BF55" />
 
       {/* Gas pump icon — lower left area */}
-      <g transform="translate(17, 38)" fill="#F5A623">
+      <g transform="translate(17, 38)" fill="#20BF55">
         {/* Pump body */}
         <rect x="0" y="2" width="7" height="9" rx="1" />
         {/* Pump top */}
         <rect x="1" y="0" width="5" height="2.5" rx="0.5" />
         {/* Nozzle arm */}
-        <path d="M 7 3.5 Q 10 3.5 10 6 L 10 9" stroke="#F5A623" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+        <path d="M 7 3.5 Q 10 3.5 10 6 L 10 9" stroke="#20BF55" strokeWidth="1.5" strokeLinecap="round" fill="none" />
         {/* Nozzle tip */}
         <rect x="9" y="8" width="2.5" height="1.5" rx="0.5" />
       </g>

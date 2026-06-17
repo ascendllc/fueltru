@@ -14,7 +14,7 @@ interface PageHeaderProps {
   backLabel?: string;
 }
 
-export function PageHeader({ backHref = "/", backLabel = "Back to FuelFool" }: PageHeaderProps) {
+export function PageHeader({ backHref = "/", backLabel = "Back to FuelTru" }: PageHeaderProps) {
   const [quote] = useState(quotes[Math.floor(Math.random() * quotes.length)]);
 
   return (
@@ -34,7 +34,7 @@ export function PageHeader({ backHref = "/", backLabel = "Back to FuelFool" }: P
         >
           <FuelGaugeLogo size={80} />
           <h1 className="text-5xl md:text-6xl font-display font-bold text-primary">
-            FuelFool
+            FuelTru
           </h1>
         </motion.div>
         <p className="text-xl md:text-2xl text-foreground font-display mb-4">

@@ -6,16 +6,16 @@ import mapBg from "@assets/IMG_0122_1781468294605.jpeg";
 
 const faqs = [
   {
-    q: "What is FuelFool?",
-    a: "FuelFool is a free gas trip cost calculator that tells you exactly how much you'll spend on fuel for any road trip. Enter your ZIP code to fetch live local gas prices, select your vehicle to pull its EPA-rated MPG, and enter your start and destination addresses. FuelFool calculates the total fuel cost — including round trips — in seconds.",
+    q: "What is FuelTru?",
+    a: "FuelTru is a free gas trip cost calculator that tells you exactly how much you'll spend on fuel for any road trip. Enter your ZIP code to fetch live local gas prices, select your vehicle to pull its EPA-rated MPG, and enter your start and destination addresses. FuelTru calculates the total fuel cost — including round trips — in seconds.",
   },
   {
-    q: "How does FuelFool calculate gas cost?",
-    a: "FuelFool uses a straightforward formula: Gas Cost = (Trip Distance in miles ÷ Vehicle MPG) × Local Gas Price per gallon. Distance comes from Google Maps (actual driving distance, not straight-line), MPG comes from the U.S. Department of Energy's FuelEconomy.gov database, and gas price comes from the U.S. Energy Information Administration (EIA) weekly survey for your region.",
+    q: "How does FuelTru calculate gas cost?",
+    a: "FuelTru uses a straightforward formula: Gas Cost = (Trip Distance in miles ÷ Vehicle MPG) × Local Gas Price per gallon. Distance comes from Google Maps (actual driving distance, not straight-line), MPG comes from the U.S. Department of Energy's FuelEconomy.gov database, and gas price comes from the U.S. Energy Information Administration (EIA) weekly survey for your region.",
   },
   {
-    q: "What data sources does FuelFool use?",
-    a: "FuelFool pulls from three official sources: (1) U.S. Energy Information Administration (EIA) for weekly regional gas prices, (2) FuelEconomy.gov (U.S. Department of Energy) for EPA-rated fuel economy by year, make, model, and trim, and (3) Google Maps Distance Matrix API for real driving distance and route data.",
+    q: "What data sources does FuelTru use?",
+    a: "FuelTru pulls from three official sources: (1) U.S. Energy Information Administration (EIA) for weekly regional gas prices, (2) FuelEconomy.gov (U.S. Department of Energy) for EPA-rated fuel economy by year, make, model, and trim, and (3) Google Maps Distance Matrix API for real driving distance and route data.",
   },
   {
     q: "How much does a typical road trip cost in gas?",
@@ -23,7 +23,7 @@ const faqs = [
   },
   {
     q: "How do I calculate gas cost for a road trip?",
-    a: "To calculate gas cost manually: (1) Find the total driving distance in miles, (2) Look up your vehicle's MPG, (3) Check the current gas price per gallon in your area, (4) Divide miles by MPG to get gallons needed, (5) Multiply gallons by price per gallon. Formula: Cost = (Miles ÷ MPG) × Price/Gallon. FuelFool automates all of these steps for you.",
+    a: "To calculate gas cost manually: (1) Find the total driving distance in miles, (2) Look up your vehicle's MPG, (3) Check the current gas price per gallon in your area, (4) Divide miles by MPG to get gallons needed, (5) Multiply gallons by price per gallon. Formula: Cost = (Miles ÷ MPG) × Price/Gallon. FuelTru automates all of these steps for you.",
   },
   {
     q: "What is considered good gas mileage (MPG)?",
@@ -43,23 +43,23 @@ const faqs = [
   },
   {
     q: "How do gas prices vary by state?",
-    a: "Gas prices in the U.S. vary significantly by state due to state fuel taxes, distance from refineries, and local regulations. California consistently has the highest gas prices (often $0.50–$1.00+ above the national average) due to its unique fuel blend requirements and high taxes. Gulf Coast states like Texas and Louisiana typically have the lowest prices. FuelFool uses your ZIP code to pull the EIA's regional price closest to you.",
+    a: "Gas prices in the U.S. vary significantly by state due to state fuel taxes, distance from refineries, and local regulations. California consistently has the highest gas prices (often $0.50–$1.00+ above the national average) due to its unique fuel blend requirements and high taxes. Gulf Coast states like Texas and Louisiana typically have the lowest prices. FuelTru uses your ZIP code to pull the EIA's regional price closest to you.",
   },
   {
-    q: "Does FuelFool calculate round-trip gas cost?",
-    a: "Yes. FuelFool includes a round-trip toggle (enabled by default) that doubles the one-way driving distance to give you the total fuel cost for driving there and back. You can uncheck the round-trip option to calculate one-way cost only.",
+    q: "Does FuelTru calculate round-trip gas cost?",
+    a: "Yes. FuelTru includes a round-trip toggle (enabled by default) that doubles the one-way driving distance to give you the total fuel cost for driving there and back. You can uncheck the round-trip option to calculate one-way cost only.",
   },
   {
-    q: "How often are gas prices updated in FuelFool?",
-    a: "FuelFool uses the U.S. Energy Information Administration (EIA) weekly retail gasoline survey, which is updated every Monday. The prices reflect the most recent weekly average for your region (e.g., East Coast, Midwest, Gulf Coast, Rocky Mountain, West Coast).",
+    q: "How often are gas prices updated in FuelTru?",
+    a: "FuelTru uses the U.S. Energy Information Administration (EIA) weekly retail gasoline survey, which is updated every Monday. The prices reflect the most recent weekly average for your region (e.g., East Coast, Midwest, Gulf Coast, Rocky Mountain, West Coast).",
   },
   {
-    q: "Can FuelFool calculate fuel cost for trucks and SUVs?",
-    a: "Yes. FuelFool supports any vehicle in the FuelEconomy.gov database, including trucks, SUVs, minivans, sports cars, and hybrids. Select your vehicle's year, make, model, and trim to get the correct EPA-rated MPG for your specific vehicle configuration.",
+    q: "Can FuelTru calculate fuel cost for trucks and SUVs?",
+    a: "Yes. FuelTru supports any vehicle in the FuelEconomy.gov database, including trucks, SUVs, minivans, sports cars, and hybrids. Select your vehicle's year, make, model, and trim to get the correct EPA-rated MPG for your specific vehicle configuration.",
   },
   {
     q: "What is the difference between city and highway MPG?",
-    a: "City MPG measures fuel economy in stop-and-go urban driving conditions, while highway MPG measures efficiency at steady highway speeds. Highway MPG is typically 20–40% higher than city MPG because there's less idling and braking. FuelFool uses the combined MPG figure (a weighted average of roughly 55% city / 45% highway) from the EPA, which most closely reflects real-world driving.",
+    a: "City MPG measures fuel economy in stop-and-go urban driving conditions, while highway MPG measures efficiency at steady highway speeds. Highway MPG is typically 20–40% higher than city MPG because there's less idling and braking. FuelTru uses the combined MPG figure (a weighted average of roughly 55% city / 45% highway) from the EPA, which most closely reflects real-world driving.",
   },
 ];
 
@@ -78,15 +78,15 @@ const faqSchema = {
 
 export default function FAQ() {
   useEffect(() => {
-    document.title = "FAQ — FuelFool Gas Trip Cost Calculator";
+    document.title = "FAQ — FuelTru Gas Trip Cost Calculator";
     const desc = document.querySelector('meta[name="description"]');
     if (desc)
       desc.setAttribute(
         "content",
-        "Frequently asked questions about FuelFool — how gas cost is calculated, what data sources are used, MPG averages, EV comparisons, and road trip fuel cost tips.",
+        "Frequently asked questions about FuelTru — how gas cost is calculated, what data sources are used, MPG averages, EV comparisons, and road trip fuel cost tips.",
       );
     return () => {
-      document.title = "FuelFool — Don't be Fooled By How Much Fuel";
+      document.title = "FuelTru — Don't be Fooled By How Much Fuel";
     };
   }, []);
 
