@@ -34,9 +34,11 @@ const DEFAULT_ORIGINS = [
   "https://www.fuelfool.com",
 ];
 
-const corsOrigins = process.env.CORS_ORIGIN
+const envOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
-  : DEFAULT_ORIGINS;
+  : [];
+
+const corsOrigins = [...new Set([...DEFAULT_ORIGINS, ...envOrigins])];
 
 app.use(cors({ origin: corsOrigins, credentials: true }));
 app.use(express.json());
